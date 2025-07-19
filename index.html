@@ -1547,6 +1547,7 @@
 
             .section {
                 padding: 1rem;
+                padding-bottom: calc(1rem + var(--safe-area-inset-bottom));
             }
 
             .section-title {
@@ -1780,6 +1781,66 @@
 
             .message-item {
                 padding: 1rem;
+            }
+
+            /* 小屏手机安全区域优化 */
+            .section {
+                padding-bottom: calc(1rem + var(--safe-area-inset-bottom));
+            }
+
+            .interactive-game-container {
+                margin-bottom: var(--safe-area-inset-bottom);
+            }
+
+            .message-form {
+                margin-bottom: var(--safe-area-inset-bottom);
+            }
+        }
+
+        /* 移动端通用安全区域处理 */
+        @media (max-width: 768px) {
+
+            /* 确保所有页面底部都有安全区域 */
+            .section:not(#home) {
+                padding-bottom: calc(1rem + var(--safe-area-inset-bottom) + 20px) !important;
+            }
+
+            /* 互动游戏容器底部安全区域 */
+            .interactive-game-container {
+                margin-bottom: calc(var(--safe-area-inset-bottom) + 10px);
+                padding-bottom: calc(1.5rem + var(--safe-area-inset-bottom));
+            }
+
+            /* 留言板表单底部安全区域 */
+            .message-form {
+                margin-bottom: calc(var(--safe-area-inset-bottom) + 10px);
+                padding-bottom: calc(3rem + var(--safe-area-inset-bottom));
+            }
+
+            /* 知识卡片网格底部安全区域 */
+            .knowledge-grid {
+                margin-bottom: calc(var(--safe-area-inset-bottom) + 20px);
+            }
+
+            /* 行动倡议网格底部安全区域 */
+            .action-grid {
+                margin-bottom: calc(var(--safe-area-inset-bottom) + 20px);
+            }
+
+            /* 留言列表底部安全区域 */
+            .message-item:last-child {
+                margin-bottom: calc(2rem + var(--safe-area-inset-bottom) + 20px);
+            }
+
+            /* 游戏结果页面底部安全区域 */
+            .quiz-results-screen {
+                padding-bottom: calc(4rem + var(--safe-area-inset-bottom));
+            }
+
+            /* 拖拽游戏底部安全区域 */
+            .drag-source-container {
+                margin-bottom: calc(var(--safe-area-inset-bottom) + 20px);
+                padding-bottom: calc(2.5rem + var(--safe-area-inset-bottom));
             }
         }
 
