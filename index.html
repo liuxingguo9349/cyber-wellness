@@ -1,0 +1,2751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>争做校园好网民 - 网络文化节</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-color: #1f2937;
+            --text-muted-color: #6b7280;
+            --border-color: #e5e7eb;
+            --border-radius: 20px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+
+        .app-wrapper {
+            display: flex;
+            height: 100vh;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .knowledge-detail-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: transform 0.4s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            background-size: 300% 300%;
+            animation: gradient-animation 15s ease infinite;
+            background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 25%, #a1c4fd 50%, #c2e9fb 75%, #ff9a9e 100%);
+        }
+
+        @keyframes gradient-animation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        body.detail-view-active .app-wrapper {
+            transform: translateX(-100%);
+        }
+
+        body.detail-view-active .knowledge-detail-view {
+            transform: translateX(0);
+        }
+
+        .navbar {
+            width: 250px;
+            background: var(--surface-color);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #e9ecef;
+            z-index: 1000;
+            height: 100vh;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-align: center;
+            flex-shrink: 0;
+            padding-top: 1rem;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .nav-menu::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--text-muted-color);
+            font-weight: 500;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item a i {
+            width: 25px;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .nav-item a:hover {
+            background-color: #eef2f7;
+            color: var(--primary-color);
+        }
+
+        .nav-item a.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(106, 103, 243, 0.4);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .section {
+            display: none;
+            min-height: 100%;
+            padding: 2rem 3rem;
+            animation: fadeIn 0.5s ease-out;
+            position: relative;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* 🏠 超美化首页 */
+        #home {
+            background: var(--gradient-bg);
+            background-size: 400% 400%;
+            animation: gradient-shift 20s ease infinite;
+            color: white;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.3)"/><circle cx="80" cy="40" r="0.5" fill="rgba(255,255,255,0.2)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+            pointer-events: none;
+        }
+
+        #home.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-content {
+            padding: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from {
+                text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            to {
+                text-shadow: 0 4px 30px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-summary {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            text-align: left;
+            font-size: 1.1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-summary h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .author-credit {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 1rem;
+            opacity: 0.8;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* 🎨 超美化知识卡片 */
+        .knowledge-card {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .knowledge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .knowledge-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        .knowledge-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .knowledge-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .knowledge-card:hover .card-title {
+            color: var(--primary-color);
+        }
+
+        .knowledge-card p {
+            color: var(--text-muted-color);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        /* 🎮 超美化互动游戏区域 */
+        .interactive-hub {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .interactive-hub .cta-button {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-hub .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .interactive-hub .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .interactive-hub .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .interactive-game-container {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            min-height: 600px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-game-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .game-area {
+            display: none;
+        }
+
+        .game-area.active {
+            display: block;
+        }
+
+        .quiz-results-screen {
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+
+        .quiz-results-screen .result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-results-screen h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-results-screen p {
+            font-size: 1.1rem;
+            color: var(--text-muted-color);
+            margin-bottom: 2rem;
+        }
+
+        .quiz-card {
+            padding: 1rem;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .quiz-question {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option.correct {
+            background: #eaf6ec;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .quiz-option.incorrect {
+            background: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+
+        .quiz-option.correct::after,
+        .quiz-option.incorrect::after {
+            margin-left: auto;
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+        }
+
+        .quiz-option.correct::after {
+            content: '\f00c';
+        }
+
+        .quiz-option.incorrect::after {
+            content: '\f00d';
+        }
+
+        /* 🔥 优化火眼金睛游戏界面 - 直接使用外层容器 */
+        #phishing-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .phishing-email {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 2rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 15px;
+            max-width: 750px;
+            width: 100%;
+            box-shadow: var(--shadow-hover);
+            border-radius: var(--border-radius);
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .phishing-email:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .email-ui-header {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            background: linear-gradient(90deg, #f8f9fa, #e9ecef);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: -1rem -1rem 25px -1rem;
+        }
+
+        .phish-hotspot {
+            cursor: pointer;
+            background: linear-gradient(45deg, rgba(255, 193, 7, 0.2), rgba(255, 152, 0, 0.3));
+            outline: 2px dashed var(--warning-color);
+            border-radius: 8px;
+            padding: 2px 6px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: inline-block;
+        }
+
+        .phish-hotspot::before {
+            content: '🎯';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .phish-hotspot:hover {
+            background: linear-gradient(45deg, rgba(255, 193, 7, 0.4), rgba(255, 152, 0, 0.5));
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .phish-hotspot:hover::before {
+            opacity: 1;
+            top: -30px;
+        }
+
+        .phish-hotspot.found {
+            background: var(--gradient-success);
+            outline: 3px solid var(--success-color);
+            cursor: default;
+            animation: found-celebration 0.8s ease;
+            color: white;
+            font-weight: 600;
+        }
+
+        .phish-hotspot.found::before {
+            content: '✅';
+            opacity: 1;
+            top: -30px;
+        }
+
+        @keyframes found-celebration {
+            0% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.2) rotate(5deg);
+            }
+
+            50% {
+                transform: scale(1.1) rotate(-5deg);
+            }
+
+            75% {
+                transform: scale(1.15) rotate(3deg);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .phishing-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .phishing-progress-bar>div {
+            height: 100%;
+            background: var(--gradient-success);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .phishing-progress-bar>div::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* 🎯 超美化分类游戏界面 */
+        .drag-drop-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .drag-column {
+            flex: 1;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border: 3px dashed transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drag-column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .drag-column.good {
+            border-color: var(--success-color);
+            background: linear-gradient(135deg, #f0fff4, #e8f5e8);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+        }
+
+        .drag-column.good::before {
+            background: var(--gradient-success);
+        }
+
+        .drag-column.good h4 {
+            color: var(--success-color);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .drag-column.bad {
+            border-color: var(--danger-color);
+            background: linear-gradient(135deg, #fff0f1, #fde8e8);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.15);
+        }
+
+        .drag-column.bad::before {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .drag-column.bad h4 {
+            color: var(--danger-color);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .drag-column:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .drag-items {
+            min-height: 200px;
+            border-radius: 12px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px dashed rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .drag-items:hover {
+            border-color: rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .drag-source-container {
+            margin-top: 3rem;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: var(--border-radius);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .drag-source-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .drag-source-container h4 {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .drag-item {
+            display: inline-block;
+            background: var(--surface-color);
+            padding: 1rem 1.5rem;
+            margin: 0.5rem;
+            border-radius: 12px;
+            cursor: grab;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drag-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .drag-item:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        .drag-item:hover::before {
+            left: 100%;
+        }
+
+        .drag-item:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .quiz-question {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-color);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .quiz-question::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        /* 🚀 超美化行动倡议区域 */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .action-item {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 3rem 2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .action-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .action-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        .action-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .action-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        .action-item:hover .action-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .action-item h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .action-item:hover h3 {
+            color: var(--primary-color);
+        }
+
+        .action-item p {
+            color: var(--text-muted-color);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .modal-body ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .modal-body li {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .modal-body li i {
+            color: var(--primary-color);
+            margin-right: 1rem;
+            margin-top: 5px;
+        }
+
+        /* 💬 超美化留言板区域 */
+        .message-form {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .message-form:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .message-item {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .message-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .message-author {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .message-time {
+            color: var(--text-muted-color);
+            font-size: 0.9rem;
+        }
+
+        .message-content {
+            color: var(--text-color);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .message-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .message-item:hover .message-actions {
+            opacity: 1;
+        }
+
+        .message-actions button {
+            background: none;
+            border: none;
+            color: var(--text-muted-color);
+            cursor: pointer;
+            margin-left: 8px;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .message-actions button:hover {
+            background: var(--border-color);
+            color: var(--primary-color);
+        }
+
+        /* 💬 超美化编辑区域 */
+        .edit-area {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .edit-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .edit-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .edit-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .edit-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .edit-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .save-btn {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .cancel-btn {
+            background: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .cancel-btn:hover {
+            background: var(--text-muted-color);
+            color: white;
+        }
+
+        .messages-container {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .messages-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages-container::-webkit-scrollbar-track {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .messages-container::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        .empty-messages {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted-color);
+        }
+
+        .empty-messages i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
+        }
+
+        .xt-muted-color {
+            cursor: pointer;
+            margin-left: 8px;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .message-actions button:hover {
+            background: var(--border-color);
+            color: var(--primary-color);
+        }
+
+        .messages-container {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .messages-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages-container::-webkit-scrollbar-track {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .messages-container::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        .empty-messages {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted-color);
+        }
+
+        .empty-messages i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
+        }
+
+        /* Beautified Knowledge Detail View */
+        .knowledge-detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .knowledge-detail-header .back-btn {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            margin-right: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .knowledge-detail-header .back-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .knowledge-detail-header h2 {
+            font-size: 2.2rem;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .knowledge-content-wrapper {
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: var(--border-radius);
+            padding: 2rem 3rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            overflow-y: auto;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .knowledge-content-wrapper h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .knowledge-content-wrapper li::marker {
+            color: var(--primary-color);
+        }
+
+        .knowledge-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 2rem;
+        }
+
+        .knowledge-nav #page-indicator {
+            margin: 0 2rem;
+            font-weight: 500;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .knowledge-nav button {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .cta-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            z-index: 9999;
+            animation: slideIn 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        /* 平板端适配 */
+        @media (max-width: 992px) {
+            .mobile-menu-btn {
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+                padding: 0.5rem;
+                background: none;
+                border: none;
+            }
+
+            .mobile-menu-btn span {
+                width: 25px;
+                height: 3px;
+                background: var(--text-color);
+                margin: 3px 0;
+                transition: all 0.3s ease;
+            }
+
+            .app-wrapper {
+                flex-direction: column;
+            }
+
+            .navbar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 1rem;
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+                position: relative;
+                z-index: 1001;
+            }
+
+            .logo {
+                margin: 0;
+                font-size: 1.3rem;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: var(--surface-color);
+                flex-direction: column;
+                padding: 2rem 1rem;
+                transition: left 0.3s ease;
+                box-shadow: var(--shadow);
+                z-index: 1000;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .main-content {
+                height: calc(100vh - 70px);
+                overflow-y: auto;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .knowledge-detail-view {
+                padding: 1.5rem;
+            }
+
+            .knowledge-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .action-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .drag-drop-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* 手机端适配 */
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            .app-wrapper,
+            .knowledge-detail-view {
+                transition: none;
+            }
+
+            body.detail-view-active .app-wrapper {
+                display: none;
+            }
+
+            body.detail-view-active .knowledge-detail-view {
+                transform: none;
+            }
+
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .nav-menu {
+                top: 60px;
+                height: calc(100vh - 60px);
+                padding: 1.5rem 1rem;
+            }
+
+            .main-content {
+                height: calc(100vh - 60px);
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-summary {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+                font-size: 1rem;
+            }
+
+            /* 移动端主页布局优化 - 解决作者信息被按钮遮挡问题 */
+            #home.active {
+                display: flex;
+                flex-direction: column;
+                min-height: calc(100vh - 60px);
+                position: relative;
+                padding: 0;
+            }
+
+            .hero-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 2rem 1rem 1rem 1rem;
+                text-align: center;
+            }
+
+            .hero-content .cta-button {
+                margin-top: 1.5rem;
+                margin-bottom: 0;
+                align-self: center;
+                width: auto;
+                min-width: 200px;
+            }
+
+            /* 移动端作者信息调整 */
+            .author-credit {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                width: 100%;
+                margin-top: auto;
+                padding: 1rem;
+                font-size: 0.9rem;
+                background: rgba(0, 0, 0, 0.25);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                flex-shrink: 0;
+            }
+
+            .knowledge-card {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .card-icon {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .interactive-hub {
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .interactive-hub .cta-button {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .interactive-game-container {
+                padding: 1.5rem;
+                min-height: 500px;
+            }
+
+            .quiz-question {
+                font-size: 1.3rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .quiz-option {
+                padding: 0.8rem;
+                font-size: 0.95rem;
+            }
+
+            .phishing-email {
+                padding: 1rem;
+                font-size: 14px;
+                max-width: 100%;
+            }
+
+            .email-ui-header {
+                padding: 0.8rem;
+                margin: -1rem -1rem 1.5rem -1rem;
+            }
+
+            .drag-column {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .drag-source-container {
+                padding: 1.5rem;
+                margin-top: 2rem;
+            }
+
+            .drag-item {
+                padding: 0.8rem 1rem;
+                margin: 0.3rem;
+                font-size: 0.9rem;
+            }
+
+            .action-item {
+                padding: 2rem 1.5rem;
+            }
+
+            .action-icon {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .message-form {
+                padding: 2rem;
+            }
+
+            .message-item {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .knowledge-detail-view {
+                padding: 1rem;
+            }
+        }
+
+        /* 小屏手机适配 */
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .hero-summary {
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .knowledge-card {
+                padding: 1rem;
+            }
+
+            .card-icon {
+                font-size: 2rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .interactive-game-container {
+                padding: 1rem;
+                min-height: 400px;
+            }
+
+            .quiz-question {
+                font-size: 1.2rem;
+            }
+
+            .quiz-option {
+                padding: 0.7rem;
+                font-size: 0.9rem;
+            }
+
+            .phishing-email {
+                padding: 0.8rem;
+                font-size: 13px;
+            }
+
+            .drag-column {
+                padding: 0.8rem;
+            }
+
+            .drag-item {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .action-item {
+                padding: 1.5rem 1rem;
+            }
+
+            .message-form {
+                padding: 1.5rem;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                padding: 0.8rem;
+                font-size: 0.95rem;
+            }
+
+            .message-item {
+                padding: 1rem;
+            }
+        }
+
+        /* 触摸设备优化 */
+        @media (hover: none) and (pointer: coarse) {
+
+            .quiz-option,
+            .drag-item,
+            .phish-hotspot,
+            .cta-button,
+            .nav-item a {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .quiz-option {
+                padding: 1rem;
+            }
+
+            .drag-item {
+                padding: 0.8rem 1rem;
+                min-height: 44px;
+            }
+
+            .phish-hotspot {
+                padding: 0.5rem;
+                min-height: 32px;
+            }
+
+            .nav-item a {
+                padding: 1rem;
+                min-height: 48px;
+            }
+        }
+
+        /* 横屏手机适配 */
+        @media (max-width: 896px) and (orientation: landscape) {
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .interactive-game-container {
+                min-height: 350px;
+            }
+
+            .main-content {
+                height: calc(100vh - 50px);
+            }
+
+            .navbar {
+                padding: 0.3rem 1rem;
+            }
+
+            .nav-menu {
+                top: 50px;
+                height: calc(100vh - 50px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-wrapper">
+        <nav class="navbar">
+            <div class="logo"><i class="fas fa-globe-asia"></i>校园好网民</div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#home" class="nav-link active"><i class="fas fa-home"></i>首页</a></li>
+                <li class="nav-item"><a href="#knowledge" class="nav-link"><i class="fas fa-book-open"></i>知识学习</a></li>
+                <li class="nav-item"><a href="#interactive" class="nav-link"><i class="fas fa-gamepad"></i>互动专区</a></li>
+                <li class="nav-item"><a href="#action" class="nav-link"><i class="fas fa-bullhorn"></i>行动倡议</a></li>
+                <li class="nav-item"><a href="#message" class="nav-link"><i class="fas fa-comments"></i>留言板</a></li>
+            </ul>
+            <button class="mobile-menu-btn"><span></span><span></span><span></span></button>
+        </nav>
+        <main class="main-content">
+            <section id="home" class="section active">
+                <div class="hero-content">
+                    <h1>争做校园好网民</h1>
+                    <p>汇聚网络正能量，奋进强国新征程。</p>
+                    <div class="hero-summary">
+                        <h4>如何争做校园好网民？</h4>
+                        争做校园好网民，意味着我们要自觉遵守法律法规，提升网络安全意识，具备辨别信息真伪的能力，并积极传播正能量。这需要我们从自身做起，文明上网、理性发声，共同维护一个健康、有序、和谐的网络环境，让网络空间成为我们学习进步、开拓眼界的良师益友。
+                    </div>
+                    <button class="cta-button" onclick="navigateTo('knowledge')">开始学习</button>
+                </div>
+                <div class="author-credit">作者: 刘兴国 | 单位: 三亚海洋研究院 | 专业方向: 计算机技术</div>
+            </section>
+
+            <section id="knowledge" class="section">
+                <h2 class="section-title">📚 网络文明知识学习</h2>
+                <p style="margin-top:-1.5rem; margin-bottom: 2rem; color: var(--text-muted-color);">点击下方的卡片，进入详细学习界面。
+                </p>
+                <div class="knowledge-grid">
+                    <div class="knowledge-card" onclick="openKnowledgeDetail('security')">
+                        <div class="card-icon"><i class="fas fa-shield-halved"></i></div>
+                        <h3 class="card-title">网络安全防护</h3>
+                        <p>学习保护个人信息，识别网络诈骗，使用强密码，安全上网的基本技能。</p>
+                    </div>
+                    <div class="knowledge-card" onclick="openKnowledgeDetail('etiquette')">
+                        <div class="card-icon"><i class="fas fa-handshake-angle"></i></div>
+                        <h3 class="card-title">网络文明礼仪</h3>
+                        <p>了解网络交往礼仪，学会尊重他人，理性发言，传播正能量内容。</p>
+                    </div>
+                    <div class="knowledge-card" onclick="openKnowledgeDetail('legal')">
+                        <div class="card-icon"><i class="fas fa-gavel"></i></div>
+                        <h3 class="card-title">网络法律法规</h3>
+                        <p>掌握网络相关法律知识，了解网络违法行为的后果，做守法好网民。</p>
+                    </div>
+                    <div class="knowledge-card" onclick="openKnowledgeDetail('literacy')">
+                        <div class="card-icon"><i class="fas fa-brain"></i></div>
+                        <h3 class="card-title">数字素养提升</h3>
+                        <p>提高数字技能，学会批判性思维，理性对待网络信息，培养媒体素养。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="interactive" class="section">
+                <h2 class="section-title">🎮 互动专区</h2>
+                <div class="interactive-hub"><button class="cta-button"
+                        onclick="switchGame('quiz')">知识问答</button><button class="cta-button"
+                        onclick="switchGame('phishing')">火眼金睛</button><button class="cta-button"
+                        onclick="switchGame('dragdrop')">行为分类</button></div>
+                <div class="interactive-game-container">
+                    <div id="quiz-game" class="game-area active">
+                        <div class="quiz-card" id="quiz-card-content"></div>
+                    </div>
+                    <div id="phishing-game" class="game-area">
+                        <!-- 火眼金睛游戏内容直接在这里 -->
+                    </div>
+                    <div id="dragdrop-game" class="game-area">
+                        <div id="drag-drop-area"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="action" class="section">
+                <h2 class="section-title">🚀 好网民行动倡议</h2>
+                <div class="action-grid">
+                    <div class="action-item" onclick="showActionDetails('rationality')">
+                        <div class="action-icon"><i class="fas fa-comment-dots"></i></div>
+                        <h3>理性发声</h3>
+                        <p>理性讨论，不传谣不信谣，用事实说话。</p>
+                    </div>
+                    <div class="action-item" onclick="showActionDetails('security')">
+                        <div class="action-icon"><i class="fas fa-user-shield"></i></div>
+                        <h3>守护安全</h3>
+                        <p>保护个人隐私，不泄露他人信息。</p>
+                    </div>
+                    <div class="action-item" onclick="showActionDetails('positive')">
+                        <div class="action-icon"><i class="fas fa-seedling"></i></div>
+                        <h3>传播正能量</h3>
+                        <p>分享正能量内容，弘扬社会主义核心价值观。</p>
+                    </div>
+                    <div class="action-item" onclick="showActionDetails('learning')">
+                        <div class="action-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <h3>持续学习</h3>
+                        <p>不断提升数字素养，跟上时代步伐。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="message" class="section">
+                <h2 class="section-title">💬 好网民留言板</h2>
+                <p style="margin-top:-1.5rem; margin-bottom: 2rem; color: var(--text-muted-color);">
+                    分享您的网络文明心得，与大家一起交流学习。</p>
+
+                <div class="message-form">
+                    <div class="form-group">
+                        <label for="authorName"><i class="fas fa-user"></i> 昵称</label>
+                        <input type="text" id="authorName" placeholder="请输入您的昵称" maxlength="20">
+                    </div>
+                    <div class="form-group">
+                        <label for="messageContent"><i class="fas fa-edit"></i> 留言内容</label>
+                        <input type="text" id="messageContent" placeholder="分享您的网络文明心得或建议..." maxlength="100">
+                    </div>
+                    <button class="cta-button" onclick="submitMessage(this)">
+                        <i class="fas fa-paper-plane"></i> 发表留言
+                    </button>
+                </div>
+
+                <div class="messages-container">
+                    <div id="messagesList">
+                        <div class="empty-messages">
+                            <i class="fas fa-comments"></i>
+                            <p>还没有留言，快来分享您的想法吧！</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="knowledge-detail-view" class="knowledge-detail-view">
+        <div class="knowledge-detail-header"><button class="back-btn" onclick="closeKnowledgeDetail()"><i
+                    class="fas fa-arrow-left"></i></button>
+            <h2 id="knowledge-title"></h2>
+        </div>
+        <div class="knowledge-content-wrapper">
+            <div id="knowledge-content-area"></div>
+        </div>
+        <div class="knowledge-nav"><button id="prev-btn" class="cta-button">上一页</button><span
+                id="page-indicator"></span><button id="next-btn" class="cta-button">下一页</button></div>
+    </div>
+
+    <div id="actionModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle" class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+                <ul id="modalList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-link'), sections = document.querySelectorAll('.section'), navMenu = document.querySelector('.nav-menu'), mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const showSection = id => { sections.forEach(s => s.classList.remove('active')); document.getElementById(id)?.classList.add('active'); navLinks.forEach(l => l.classList.remove('active')); document.querySelector(`.nav-link[href="#${id}"]`)?.classList.add('active'); if (window.innerWidth <= 992) navMenu.classList.remove('active') };
+            navLinks.forEach(l => l.addEventListener('click', e => { e.preventDefault(); showSection(l.getAttribute('href').substring(1)) }));
+            window.navigateTo = id => showSection(id); mobileMenuBtn.addEventListener('click', () => navMenu.classList.toggle('active'));
+            const showToast = (message, type = 'success') => { const t = document.createElement('div'); t.className = `toast ${type}`; t.textContent = message; document.body.appendChild(t); setTimeout(() => t.remove(), 3000) };
+
+            // Interactive Games Main Switch
+            window.switchGame = gameId => {
+                // 清空所有游戏区域的内容
+                document.getElementById('quiz-game').innerHTML = '<div class="quiz-card" id="quiz-card-content"></div>';
+                document.getElementById('phishing-game').innerHTML = '';
+                document.getElementById('dragdrop-game').innerHTML = '<div id="drag-drop-area"></div>';
+
+                // 切换激活状态
+                document.querySelectorAll('.game-area').forEach(a => a.classList.remove('active'));
+                document.getElementById(`${gameId}-game`).classList.add('active');
+
+                // 使用 setTimeout 确保 DOM 更新完成后再启动游戏
+                setTimeout(() => {
+                    if (gameId === 'quiz') startQuiz();
+                    if (gameId === 'phishing') startPhishingGame();
+                    if (gameId === 'dragdrop') startDragDrop();
+                }, 10);
+            };
+
+            // --- Knowledge Detail View ---
+            const knowledgeBase = {
+                'security': {
+                    title: '网络安全防护',
+                    pages: [
+                        `<h3>1. 认识个人信息</h3><ul><li><strong>核心定义：</strong>任何能单独或结合其他信息识别特定自然人身份的信息都是个人信息。</li><li><strong>常见类型：</strong>姓名、生日、身份证号、电话、住址、生物识别信息（指纹/人脸）、行踪轨迹等。</li><li><strong>敏感个人信息：</strong>一旦泄露或非法使用，易导致人格尊严受侵害或人身财产安全受危害的信息，如金融账户、医疗健康信息。</li></ul>`,
+                        `<h3>2. 强密码的黄金法则</h3><ul><li><strong>长度优先：</strong>长度比复杂度更重要，建议至少12位以上。</li><li><strong>三要素结合：</strong>包含大写字母、小写字母、数字、特殊符号（如!@#$）。</li><li><strong>避免常用信息：</strong>不要使用生日、姓名拼音、电话号码或"123456"等弱密码。</li><li><strong>口令短语法：</strong>例如，将“我最喜欢的诗是静夜思”变成 "WzxsdS_Jys!"。</li></ul>`,
+                        `<h3>3. 双因素认证 (2FA)</h3><ul><li><strong>核心原理：</strong>“你知道的（密码）” + “你拥有的（手机/令牌）”，提供双重保障。</li><li><strong>为什么必须开启：</strong>即使密码被盗，没有第二重验证，攻击者也无法登录。</li><li><strong>常见形式：</strong>短信验证码、身份验证器App（如Google Authenticator）、硬件密钥（如YubiKey）。</li><li><strong>行动指南：</strong>立即为你的微信、支付宝、QQ、邮箱等关键账户开启2FA。</li></ul>`,
+                        `<h3>4. 识别“钓鱼”攻击 (Phishing)</h3><ul><li><strong>核心特征：</strong>伪装成官方机构（银行、学校、平台），通过邮件、短信等方式，诱骗你点击恶意链接或提供敏感信息。</li><li><strong>识别技巧1 - 发件人：</strong>仔细检查发件人邮箱地址，是否与官方域名有细微差别（如 service@alibabo.com）。</li><li><strong>识别技巧2 - 紧急性：</strong>常使用“账户异常”、“紧急验证”、“中大奖”等字眼制造紧迫感或贪婪心理。</li><li><strong>识别技巧3 - 链接地址：</strong>在电脑上将鼠标悬停在链接上，预览实际URL是否可疑。</li></ul>`,
+                        `<h3>5. 防范社交工程</h3><ul><li><strong>核心定义：</strong>利用人性的弱点（如信任、恐惧、好奇）进行欺骗，是所有网络攻击中最防不胜防的一环。</li><li><strong>常见剧本：</strong>冒充客服退款、冒充公检法办案、冒充老师/同学紧急求助、假冒中奖信息。</li><li><strong>黄金法则：</strong>保持怀疑，多方核实。任何涉及转账、提供验证码的要求，务必通过官方渠道或电话直接联系本人确认。</li></ul>`,
+                        `<h3>6. 安全的Wi-Fi使用习惯</h3><ul><li><strong>公共Wi-Fi风险：</strong>黑客可建立同名假Wi-Fi（“蜜罐”），或在不加密的Wi-Fi中嗅探你的数据。</li><li><strong>安全措施：</strong>避免在公共Wi-Fi下登录网银、支付等敏感账户。</li><li><strong>使用VPN：</strong>在连接公共Wi-Fi时，使用VPN（虚拟专用网络）可以加密你的所有网络流量，大幅提升安全性。</li></ul>`,
+                        `<h3>7. 软件与系统更新的重要性</h3><ul><li><strong>漏洞的窗口期：</strong>从漏洞被发现到你打上补丁，这段时间是黑客攻击的黄金时期。</li><li><strong>“亡羊补牢”思维：</strong>不更新系统和软件，等于把已知的安全漏洞向黑客敞开。</li><li><strong>开启自动更新：</strong>为你的操作系统（Windows/macOS）、手机系统和常用软件（浏览器、微信等）开启自动更新，是最高效的防护手段。</li></ul>`,
+                        `<h3>8. 认识恶意软件家族</h3><ul><li><strong>病毒(Virus)：</strong>会自我复制并感染其他文件的“寄生虫”。</li><li><strong>蠕虫(Worm)：</strong>利用网络自主传播，无需宿主文件。</li><li><strong>木马(Trojan)：</strong>伪装成有用软件，但 secretly 执行恶意操作。</li><li><strong>勒索软件(Ransomware)：</strong>加密你的文件并索要赎金，是目前危害最大的类型之一。</li><li><strong>间谍软件(Spyware)：</strong>在后台偷偷收集你的上网习惯、键盘记录等信息。</li></ul>`,
+                        `<h3>9. 数字足迹管理</h3><ul><li><strong>什么是数字足迹：</strong>你在网上留下的所有痕迹，包括发帖、点赞、浏览历史、注册信息等。</li><li><strong>主动与被动足迹：</strong>主动是你自己发布的内容，被动是网站收集的关于你的数据。</li><li><strong>定期清理：</strong>定期检查并清理不再使用的老旧账户和不当言论。</li><li><strong>“谷歌”一下自己：</strong>定期搜索自己的名字，看看网上有哪些关于你的公开信息。</li></ul>`,
+                    ]
+                },
+                'etiquette': {
+                    title: '网络文明礼仪',
+                    pages: [
+                        `<h3>1. 网络礼仪的核心：尊重与同理心</h3><ul><li><strong>己所不欲，勿施于人：</strong>如果你不想在现实生活中听到刻薄的话，就不要在网上对别人说。</li><li><strong>屏幕背后是真人：</strong>记住你交流的对象是一个有感情的人，而不是一堆代码。</li><li><strong>换位思考：</strong>在发送信息前，想象一下对方看到这条信息时的感受。</li></ul>`,
+                        `<h3>2. 文明评论，理性表达</h3><ul><li><strong>对事不对人：</strong>可以反驳观点，但不要进行人身攻击。</li><li><strong>拒绝“键盘侠”：</strong>避免使用侮辱性、歧视性或攻击性的语言。</li><li><strong>提供建设性意见：</strong>与其简单地说“不好”，不如说“如果……可能会更好”。</li><li><strong>学会赞美：</strong>看到优秀的内容，不要吝啬你的赞美和鼓励。</li></ul>`,
+                        `<h3>3. 在线辩论的艺术</h3><ul><li><strong>保持冷静：</strong>情绪化是理性讨论的敌人。</li><li><strong>基于事实：</strong>用证据和逻辑来支撑你的观点，而非情绪。</li><li><strong>尊重不同意见：</strong>允许他人有不同的看法，寻求共识而非压倒对方。</li><li><strong>适时退出：</strong>当讨论变成无休止的争吵时，学会优雅地退出。</li></ul>`,
+                        `<h3>4. 信息分享的责任</h3><ul><li><strong>核实再转发：</strong>转发信息前，先判断其真实性，做到“不信谣、不传谣”。</li><li><strong>注明出处：</strong>分享他人的文章、图片或观点时，注明来源是对创作者的基本尊重。</li><li><strong>考虑受众：</strong>分享内容前，考虑是否适合所有接收者，避免在不合适的群组发不相关的内容。</li></ul>`,
+                        `<h3>5. 保护他人隐私</h3><ul><li><strong>不泄露个人信息：</strong>未经允许，绝不发布他人的电话、住址、照片等隐私信息。</li><li><strong>谨慎@和截图：</strong>在社交媒体@他人或发布含他人信息的截图前，先征得对方同意。</li><li><strong>尊重“数字遗忘权”：</strong>不恶意挖掘和传播他人希望被遗忘的“黑历史”。</li></ul>`,
+                        `<h3>6. 即时通讯工具（微信/QQ）礼仪</h3><ul><li><strong>问“在吗”不如直说事：</strong>直接说明来意，节省双方时间。</li><li><strong>避免语音轰炸：</strong>超过30秒的长篇大论，尽量用文字代替，或先询问对方是否方便听语音。</li><li><strong>注意发送时间：</strong>在深夜或清晨，非紧急情况尽量不打扰他人。</li><li><strong>表情包的妙用与误用：</strong>善用表情包缓和气氛，但避免在严肃讨论中使用。</li></ul>`,
+                        `<h3>7. 电子邮件礼仪</h3><ul><li><strong>清晰的标题：</strong>标题应简明扼要地概括邮件内容。</li><li><strong>得体的称呼与结尾：</strong>使用恰当的称呼（如“尊敬的XX老师”）和落款。</li><li><strong>正文简洁明了：</strong>分段、使用项目符号，让邮件易于阅读。</li><li><strong>及时回复：</strong>即使不能马上解决，也应及时回复告知已收到。</li></ul>`,
+                        `<h3>8. 网络社群/论坛礼仪</h3><ul><li><strong>入乡随俗：</strong>加入新社群前，先阅读版规，了解社区文化。</li><li><strong>避免“挖坟”：</strong>不要回复很久以前的旧帖子，除非有新的重要信息补充。</li><li><strong>禁止刷屏：</strong>不要重复发送相同或相似的内容。</li><li><strong>善用搜索：</strong>提问前，先搜索一下问题是否已经被解答过。</li></ul>`,
+                        `<h3>9. 视频会议礼仪</h3><ul><li><strong>准时上线：</strong>提前几分钟进入会议室，调试好设备。</li><li><strong>注意着装与背景：</strong>即使在家，也要保持着装得体，背景整洁。</li><li><strong>静音是美德：</strong>不发言时，请将麦克风静音，避免杂音干扰。</li><li><strong>专注参会：</strong>避免在会议中处理其他事务，这是对所有参会者的尊重。</li></ul>`,
+                        `<h3>10. 在线学习礼仪</h3><ul><li><strong>尊重老师：</strong>在直播课中，遵守课堂纪律，不刷屏、不发与课程无关的内容。</li><li><strong>有效提问：</strong>提问要清晰、具体，表达对知识的渴求。</li><li><strong>互助学习：</strong>在课程群或讨论区，积极帮助同学解答疑问，形成良好学习氛围。</li></ul>`,
+                    ]
+                },
+                'legal': {
+                    title: '网络法律法规',
+                    pages: [
+                        `<h3>1. 《网络安全法》核心要义</h3><ul><li><strong>法律地位：</strong>我国网络领域的基础性法律。</li><li><strong>核心原则：</strong>明确了网络空间主权，强调网络安全与信息化发展并重。</li><li><strong>个人责任：</strong>任何个人和组织使用网络应当遵守宪法法律，遵守公共秩序，尊重社会公德。</li><li><strong>实名制要求：</strong>网络运营者为用户办理网络接入、提供信息发布等服务，应当要求用户提供真实身份信息。</li></ul>`,
+                        `<h3>2. 《个人信息保护法》与你我</h3><ul><li><strong>“告知-同意”原则：</strong>处理个人信息前，应向个人告知并取得同意。</li><li><strong>最小必要原则：</strong>处理个人信息应当具有明确、合理的目的，并限于实现目的的最小范围。</li><li><strong>你的权利：</strong>你有权查询、复制、更正、删除自己的个人信息。</li><li><strong>“大数据杀熟”：</strong>禁止利用个人信息进行不合理的差别待遇。</li></ul>`,
+                        `<h3>3. 什么是网络谣言？</h3><ul><li><strong>法律定义：</strong>网络上流传的没有事实根据、凭空捏造的虚假信息。</li><li><strong>法律后果（轻）：</strong>根据《治安管理处罚法》，散布谣言，谎报险情、疫情、警情，处五日以上十日以下拘留，可并处五百元以下罚款。</li><li><strong>法律后果（重）：</strong>如果谣言造成严重后果，可能构成“编造、故意传播虚假信息罪”，最高可判七年有期徒刑。</li><li><strong>行动指南：</strong>不信谣、不传谣，发现谣言及时向平台或网警举报。</li></ul>`,
+                        `<h3>4. 网络世界的著作权</h3><ul><li><strong>保护对象：</strong>文字、音乐、美术、摄影、影视、软件等作品。</li><li><strong>常见侵权行为：</strong>未经许可复制、传播他人作品（如盗版电影/音乐/软件），“洗稿”他人的文章。</li><li><strong>合理使用：</strong>为个人学习、研究或欣赏，使用他人已发表的作品，属于合理使用，但需指明作者和出处。</li><li><strong>避风港原则：</strong>网络服务提供者在接到侵权通知后及时删除，可免除赔偿责任。</li></ul>`,
+                        `<h3>5. 网络诽谤与名誉权</h3><ul><li><strong>什么是诽谤：</strong>捏造事实并通过网络散布，公然丑化他人人格，损害他人名誉。</li><li><strong>法律红线：</strong>同一诽谤信息实际被点击、浏览次数达到五千次以上，或者被转发次数达到五百次以上，即可构成“诽谤罪”。</li><li><strong>后果：</strong>诽谤罪最高可判处三年有期徒刑。</li><li><strong>保护自己：</strong>遭遇网络诽访，应及时截图取证，并可向法院提起诉讼。</li></ul>`,
+                        `<h3>6. 网络暴力与寻衅滋事</h3><ul><li><strong>“人肉搜索”：</strong>非法曝光他人隐私信息，可能侵犯个人信息权，情节严重的可能构成犯罪。</li><li><strong>网络辱骂/恐吓：</strong>在网络上肆意辱骂、恐吓他人，情节恶劣的，可能构成“寻衅滋事罪”。</li><li><strong>法律武器：</strong>网络空间不是法外之地，网络暴力同样要承担法律责任。</li></ul>`,
+                        `<h3>7. “翻墙”的法律风险</h3><ul><li><strong>法律规定：</strong>未经电信主管部门批准，自行建立或租用专线等其他信道开展跨境经营活动属于违规行为。</li><li><strong>个人使用：</strong>个人使用VPN“翻墙”浏览境外网站，目前主要由《治安管理处罚法》进行行政处罚，如警告、罚款。</li><li><strong>风险提示：</strong>使用不安全的VPN工具，本身也存在巨大的个人信息泄露风险。</li></ul>`,
+                        `<h3>8. 网络游戏法律规范</h3><ul><li><strong>未成年人保护：</strong>严格实行网络游戏用户账号实名注册和登录要求；严格限制向未成年人提供网络游戏服务的时间。</li><li><strong>虚拟财产保护：</strong>游戏账号、装备等虚拟财产受法律保护，盗窃虚拟财产同样构成盗窃罪。</li><li><strong>版号制度：</strong>所有在中国大陆运营的网络游戏，都必须获得国家新闻出版署审批的版号。</li></ul>`,
+                        `<h3>9. 直播与短视频的法律边界</h3><ul><li><strong>内容底线：</strong>禁止传播违反法律法规、宣扬淫秽、暴力、赌博等内容。</li><li><strong>主播责任：</strong>主播需要对自己直播的内容负责，平台也负有监管责任。</li><li><strong>带货规范：</strong>直播带货属于商业广告活动，需遵守《广告法》《电子商务法》等相关规定，不得进行虚假宣传。</li></ul>`,
+                        `<h3>10. 非法侵入计算机系统罪</h3><ul><li><strong>行为定义：</strong>俗称“黑客攻击”，指违反国家规定，侵入国家事务、国防建设、尖端科学技术领域的计算机信息系统。</li><li><strong>也包括普通系统：</strong>侵入其他计算机信息系统，或者采用其他技术手段，获取该系统中存储、处理、传输的数据，情节严重的，同样构成本罪。</li><li><strong>敬畏技术：</strong>技术是双刃剑，应被用于创造价值，而非破坏秩序。</li></ul>`,
+                    ]
+                },
+                'literacy': {
+                    title: '数字素养提升',
+                    pages: [
+                        `<h3>1. 什么是数字素养？</h3><ul><li><strong>超越技能：</strong>不仅是会用电脑、手机，更是利用数字技术进行信息获取、加工、创造、交流和解决问题的综合能力与素质。</li><li><strong>四大维度：</strong>数字意识、计算思维、数字化学习与创新、数字社会责任。</li><li><strong>核心目标：</strong>成为一个批判性的思考者和负责任的数字公民。</li></ul>`,
+                        `<h3>2. 高效信息检索技巧</h3><ul><li><strong>使用引号：</strong>“校园好网民” 进行精确匹配搜索。</li><li><strong>使用减号：</strong>网络安全 -广告 排除包含“广告”的结果。</li><li><strong>限定网站：</strong>“site:edu.cn 网络文明” 只在教育网站中搜索。</li><li><strong>限定文件类型：</strong>“filetype:pdf 网络安全报告” 只搜索PDF文件。</li><li><strong>组合使用：</strong>结合上述语法，可以极大地提高搜索效率和准确性。</li></ul>`,
+                        `<h3>3. 批判性思维：CRAAP测试法</h3><ul><li><strong>Currency (时效性)：</strong>信息是什么时候发布的？是否过时？</li><li><strong>Relevance (相关性)：</strong>信息与你的需求相关吗？受众是谁？</li><li><strong>Authority (权威性)：</strong>作者是谁？其资质如何？信息来源可靠吗？</li><li><strong>Accuracy (准确性)：</strong>内容是否真实？有无证据支持？</li><li><strong>Purpose (目的性)：</strong>作者发布此信息的意图是什么？是告知、娱乐还是说服？</li></ul>`,
+                        `<h3>4. 事实核查 (Fact-Checking) 基础</h3><ul><li><strong>交叉验证：</strong>不要只信单一来源，寻找至少2-3个不同立场、权威的信源进行比对。</li><li><strong>反向图片搜索：</strong>使用Google图片、百度识图等工具，检查图片是否被篡改或用于误导性场景。</li><li><strong>警惕深度伪造 (Deepfake)：</strong>注意观察视频中人物面部边缘、眨眼频率、肤色等不自然之处。</li><li><strong>利用事实核查网站：</strong>如官方的“中国互联网联合辟谣平台”。</li></ul>`,
+                        `<h3>5. 识别信息茧房与回音室效应</h3><ul><li><strong>信息茧房：</strong>个性化推荐算法，让你只看到自己喜欢或认同的信息，像蚕一样被包裹在茧里。</li><li><strong>回音室效应：</strong>在封闭的社群中，相同的观点被不断重复和加强，使得你认为这就是全部真相。</li><li><strong>如何破茧：</strong>主动关注不同观点的信源；定期清理浏览记录，减少算法的过度个性化；与现实生活中的人多交流。</li></ul>`,
+                        `<h3>6. 理解算法推荐的逻辑</h3><ul><li><strong>核心驱动：</strong>算法的目标是最大化你的在线时长和互动（点赞、评论、分享）。</li><li><strong>标签化：</strong>你的每一次点击、停留都在为自己打上“标签”，算法根据标签向你推荐内容。</li><li><strong>“奶头乐”陷阱：</strong>算法倾向于推荐能带来即时满足感的娱乐性、刺激性内容，可能让你沉迷其中，丧失深度思考能力。</li><li><strong>成为算法的主人：</strong>有意识地选择消费高质量信息，主动“喂”给算法你真正想学的内容。</li></ul>`,
+                        `<h3>7. 培养媒介信息辨别力</h3><ul><li><strong>区分事实与观点：</strong>事实是可以被证实的客观存在，观点是个人主观判断。</li><li><strong>警惕情绪化语言：</strong>充满煽动性、极端化词汇的文章，通常可信度较低。</li><li><strong>注意统计数据陷阱：</strong>数据来源可靠吗？样本有代表性吗？相关性不等于因果性。</li></ul>`,
+                        `<h3>8. 负责任的数字内容创作</h3><ul><li><strong>原创精神：</strong>尊重知识产权，坚持原创，杜绝抄袭和“洗稿”。</li><li><strong>内容为王：</strong>创作有价值、有深度、能引发思考或带来帮助的内容。</li><li><strong>道德底线：</strong>不为博取流量而制造焦虑、散布仇恨或传播低俗内容。</li><li><strong>接受批评：</strong>以开放的心态接受他人的反馈和批评，并从中成长。</li></ul>`,
+                        `<h3>9. 建立积极的数字形象</h3><ul><li><strong>你的网络形象就是你的名片：</strong>你在社交媒体的发言、分享、互动，共同构成了你的“数字人格”。</li><li><strong>展示专业与热情：</strong>在知乎、B站、GitHub等平台，分享你的学习心得、专业见解，是极佳的自我展示。</li><li><strong>谨言慎行：</strong>互联网是有记忆的，不当言论可能会对未来的求学、求职造成负面影响。</li></ul>`,
+                        `<h3>10. 数字健康与福祉</h3><ul><li><strong>管理屏幕时间：</strong>使用手机自带的屏幕时间管理工具，设定App使用时长限制。</li><li><strong>数字排毒 (Digital Detox)：</strong>定期（如周末的几个小时）完全脱离电子设备，关注现实生活。</li><li><strong>保护视力：</strong>遵循“20-20-20”原则，即每使用电子设备20分钟，就向20英尺（约6米）外远眺20秒。</li><li><strong>信息过载管理：</strong>精简关注列表，关闭不必要的App通知，避免被无用信息淹没。</li></ul>`,
+                    ]
+                }
+            }; let currentKnowledgeTopic = null, currentKnowledgePageIndex = 0;
+            const knowledgeTitleEl = document.getElementById('knowledge-title'), knowledgeContentEl = document.getElementById('knowledge-content-area'), pageIndicatorEl = document.getElementById('page-indicator'), prevBtn = document.getElementById('prev-btn'), nextBtn = document.getElementById('next-btn');
+            window.openKnowledgeDetail = key => { currentKnowledgeTopic = key; currentKnowledgePageIndex = 0; document.body.classList.add('detail-view-active'); renderKnowledgePage() };
+            window.closeKnowledgeDetail = () => document.body.classList.remove('detail-view-active');
+            const renderKnowledgePage = () => { const topicData = knowledgeBase[currentKnowledgeTopic]; if (!topicData) return; knowledgeTitleEl.textContent = topicData.title; knowledgeContentEl.innerHTML = topicData.pages[currentKnowledgePageIndex]; pageIndicatorEl.textContent = `第 ${currentKnowledgePageIndex + 1} / ${topicData.pages.length} 页`; prevBtn.disabled = currentKnowledgePageIndex === 0; nextBtn.disabled = currentKnowledgePageIndex >= topicData.pages.length - 1 };
+            prevBtn.addEventListener('click', () => { if (currentKnowledgePageIndex > 0) { currentKnowledgePageIndex--; renderKnowledgePage() } });
+            nextBtn.addEventListener('click', () => { const topicData = knowledgeBase[currentKnowledgeTopic]; if (currentKnowledgePageIndex < topicData.pages.length - 1) { currentKnowledgePageIndex++; renderKnowledgePage() } });
+
+            // --- Game 1: Quiz ---
+            const quizData = [
+                { q: "以下哪种密码最安全？", o: ["123456", "password", "R#tina88@!", "qwerty"], a: 2 },
+                { q: "收到陌生人发来的链接，应该怎么做？", o: ["立即点击查看", "谨慎判断，不轻易点击", "先杀毒再点击", "转发给朋友"], a: 1 },
+                { q: "发现网络谣言时，正确的做法是？", o: ["立即转发", "不信不传，并向平台举报", "添加自己的观点再转发", "忽略不管"], a: 1 },
+                { q: "当你在网上看到“扫码免费领红包”的活动，你应该？", o: ["立即扫码领取", "告诉朋友一起领", "警惕可能是骗局，不轻易扫码", "换个手机扫码"], a: 2 },
+                { q: "在社交媒体上发布个人照片时，哪种做法更安全？", o: ["开启地理位置定位", "关闭地理位置，并模糊背景中的关键信息", "发布包含家庭住址的照片", "公开自己的航班信息"], a: 1 },
+                { q: "“2FA”或“双因素认证”指的是什么？", o: ["两次密码验证", "密码加另一重验证（如手机验证码）", "需要两个人才能登录", "一个非常复杂的密码"], a: 1 },
+                { q: "在公共场所使用免费Wi-Fi时，哪项操作风险最高？", o: ["浏览新闻", "登录网上银行", "观看在线视频", "查询天气"], a: 1 },
+                { q: "“HTTPS”协议比“HTTP”协议多出的“S”代表什么？", o: ["速度(Speed)", "安全(Secure)", "简单(Simple)", "标准(Standard)"], a: 1 },
+                { q: "下列哪个行为不属于网络欺凌(Cyberbullying)？", o: ["在网上对他人进行人身攻击", "恶意泄露他人隐私", "在评论区进行有理有据的辩论", "在群聊中孤立和嘲笑某人"], a: 2 },
+                { q: "“信息茧房”效应指的是什么？", o: ["信息被加密保护起来", "网络信息太多，让人感到困惑", "因算法推荐，人们只看到自己认同的信息", "在网上建立的私密信息空间"], a: 2 },
+                { q: "在网上与人交流时，全部使用大写字母通常被理解为什么？", o: ["表示强调", "表示友好", "表示在喊叫或非常生气", "一种流行的打字风格"], a: 2 },
+                { q: "根据我国法律，在网上捏造事实诽谤他人，情节严重者可能构成什么罪？", o: ["寻衅滋事罪", "诽谤罪", "侵犯公民个人信息罪", "扰乱公共秩序罪"], a: 1 },
+                { q: "“勒索软件”是一种什么样的恶意软件？", o: ["窃取你的密码", "在电脑上播放广告", "加密你的文件并索要赎金", "记录你的键盘输入"], a: 2 },
+                { q: "在搜索引擎中使用引号（如 `\"网络文明\"`）的作用是什么？", o: ["进行模糊搜索", "搜索相关图片", "进行精确短语搜索", "排除这个词"], a: 2 },
+                { q: "“钓鱼邮件”通常具有哪个特征？", o: ["发件人地址非常正规", "内容通常是普通的问候", "制造紧迫感或利用贪婪心理", "邮件体积非常小"], a: 2 },
+                { q: "当你安装一个App时，它请求获取与功能无关的权限（如手电筒App要通讯录权限），你应该？", o: ["全部同意，否则无法使用", "拒绝不必要的权限请求", "先同意，用完再关掉", "卸载这个App，再找一个"], a: 1 },
+                { q: "“数字足迹”指的是什么？", o: ["你在网上行走的步数", "你在网上留下的所有活动痕跡", "一种特殊的数字加密技术", "你的数字设备数量"], a: 1 },
+                { q: "以下哪项是保护个人隐私的错误做法？", o: ["定期清理社交媒体上的敏感信息", "在不同网站使用相同的强密码", "关闭不常用App的定位权限", "不随意参加网络上的性格测试"], a: 1 },
+                { q: "“洗稿”行为主要侵犯了他人的什么权利？", o: ["名誉权", "肖像权", "著作权", "隐私权"], a: 2 },
+                { q: "处理不再使用的、存有个人数据的旧手机，最安全的方法是？", o: ["直接扔掉", "恢复出厂设置后卖掉或回收", "格式化后送给朋友", "放在家里抽屉里"], a: 1 },
+                { q: "在网络社群中，“挖坟”通常指的是什么行为？", o: ["讨论考古话题", "回复一个非常久远的旧帖子", "恶意攻击他人", "寻找网络宝藏"], a: 1 },
+                { q: "以下哪个不是《中华人民共和国个人信息保护法》规定的个人权利？", o: ["查询、复制个人信息", "更正、补充个人信息", "要求删除个人信息", "随意查看他人的个人信息"], a: 3 },
+                { q: "在进行在线辩论时，哪种行为是值得提倡的？", o: ["对人不对事，进行人身攻击", "使用情绪化的语言压倒对方", "基于事实和逻辑进行讨论", "不断重复自己的观点"], a: 2 },
+                { q: "“Deepfake”（深度伪造）技术最常被用来做什么？", o: ["优化视频画质", "制作AI换脸视频", "加密视频文件", "压缩视频大小"], a: 1 },
+                { q: "“点击诱饵”（Clickbait）指的是什么？", o: ["非常有价值的文章标题", "用夸张、误导性标题吸引点击", "一种网络广告形式", "一种网络钓鱼技术"], a: 1 },
+                { q: "在微信群里，发一长段话最不推荐的方式是？", o: ["发一段完整的文字", "发十几条短语音刷屏", "发一条长语音并附上文字总结", "整理成文档发送"], a: 1 },
+                { q: "“社交工程”攻击主要利用的是什么？", o: ["计算机系统的漏洞", "人性的心理弱点", "网络协议的缺陷", "软件的Bug"], a: 1 },
+                { q: "浏览器的“无痕模式”能做到什么？", o: ["让网络运营商无法追踪你", "让访问的网站不知道你是谁", "不在你的本地设备上留下历史记录", "完全匿名上网"], a: 2 },
+                { q: "当你看到一条耸人听闻的新闻时，进行“事实核查”的第一步应该是？", o: ["立即转发到朋友圈", "在评论区发表看法", "寻找其他权威信源进行交叉验证", "相信它，因为听起来很真实"], a: 2 },
+                { q: "以下哪项是预防“勒索软件”攻击的有效措施？", o: ["定期备份重要文件", "使用简单的密码", "从不更新操作系统", "点击所有邮件附件"], a: 0 },
+                { q: "在网络游戏中，盗窃他人账号和虚拟财产的行为？", o: ["只是游戏，不受法律约束", "是一种道德问题", "可能构成盗窃罪，需要承担法律责任", "只要不告诉别人就没事"], a: 2 },
+                { q: "以下哪项是对“算法推荐”的正确理解？", o: ["算法是完全公平公正的", "算法旨在拓宽你的视野", "算法倾向于推荐能让你停留更久的内容", "你可以完全控制算法"], a: 2 },
+                { q: "在网上分享他人创作的图片、文章时，符合网络礼仪的做法是？", o: ["直接复制粘贴当作自己的", "注明作者和来源", "裁剪掉作者的水印", "不作任何说明"], a: 1 },
+                { q: "以下哪个域名后缀通常代表非营利组织？", o: [".com", ".gov", ".org", ".edu"], a: 2 },
+                { q: "“木马”程序（Trojan Horse）的名字来源于什么？", o: ["一种马的品种", "特洛伊木马的典故", "程序作者的名字", "一个计算机品牌"], a: 1 },
+                { q: "“大数据杀熟”主要侵犯了消费者的什么权利？", o: ["知情权", "公平交易权", "安全保障权", "隐私权"], a: 1 },
+                { q: "“TL;DR”这个网络用语是什么意思？", o: ["请稍等", "太长不看", "谢谢你", "我同意"], a: 1 },
+                { q: "下列哪种行为有助于打破“信息茧房”？", o: ["只看自己喜欢的博主", "主动关注和阅读不同观点的文章", "屏蔽所有不认同的观点", "让算法决定你看什么"], a: 1 },
+                { q: "在进行视频会议时，哪项是不推荐的礼仪行为？", o: ["不发言时将麦克风静音", "注意着装和背景整洁", "在会议期间处理其他无关工作", "提前上线调试设备"], a: 2 },
+                { q: "“网络水军”指的是什么？", o: ["海军的在线社区", "在网上进行游泳教学的人", "受雇在网络上进行大规模发帖评论的群体", "一种网络安全职位"], a: 2 },
+                { q: "更新操作系统和软件的主要目的是什么？", o: ["体验新的界面", "修复已知的安全漏洞", "让电脑运行变慢", "占用更多的硬盘空间"], a: 1 },
+                { q: "以下哪项是《网络安全法》规定的网络运营者的责任？", o: ["保证所有信息真实", "对用户发布的信息进行审查监管", "替用户保管密码", "随意删除用户信息"], a: 1 },
+                { q: "用“site:edu.cn 计算机”进行搜索，会得到什么结果？", o: ["所有关于“计算机”的网站", "所有教育网站的首页", "只在“.edu.cn”后缀的网站中搜索“计算机”", "所有关于“site”和“edu”的计算机信息"], a: 2 },
+                { q: "“键盘侠”通常指哪一类网民？", o: ["打字速度非常快的人", "在网上发表不负责任、攻击性言论的人", "专业的电竞选手", "电脑硬件测评专家"], a: 1 },
+                { q: "“防火墙”（Firewall）在网络安全中的主要作用是？", o: ["防止电脑过热起火", "监控和控制网络流量，抵御未授权访问", "查杀电脑病毒", "加快上网速度"], a: 1 },
+                { q: "“人肉搜索”行为可能侵犯他人的哪项权利？", o: ["肖像权", "著作权", "隐私权", "名誉权"], a: 2 },
+                { q: "为了网络交流的效率，提出问题时最好的方式是？", o: ["只问一句“在吗？”", "清晰具体地描述你的问题和背景", "发一个“求助”的表情包", "连续不断地提问"], a: 1 },
+                { q: "以下哪项不属于个人信息？", o: ["身份证号码", "家庭住址", "公开发布的新闻报道", "手机号码"], a: 2 },
+                { q: "当你在网上看到虐待动物的视频时，不合适的做法是？", o: ["出于猎奇心理转发传播", "向平台举报该内容", "感到不适，选择不观看", "提醒他人该内容可能引人不适"], a: 0 },
+                { q: "以下哪个做法有助于培养批判性思维？", o: ["对任何信息都全盘接受", "只相信自己原本的看法", "对信息来源和动机提出疑问", "跟着大多数人的观点走"], a: 2 }
+            ];
+
+            let currentQuiz = 0, score = 0, selectedQuizData = [];
+
+            // 获取quiz卡片元素的函数，确保每次都能获取到最新的DOM元素
+            const getQuizCard = () => document.getElementById('quiz-card-content');
+
+            // 随机选择5道题的函数
+            const getRandomQuizData = () => {
+                const shuffled = [...quizData].sort(() => 0.5 - Math.random());
+                return shuffled.slice(0, 5);
+            };
+
+            window.startQuiz = () => {
+                currentQuiz = 0;
+                score = 0;
+                // 随机选择5道题
+                selectedQuizData = getRandomQuizData();
+                // 确保DOM元素存在后再开始游戏
+                const quizCard = getQuizCard();
+                if (quizCard) {
+                    showQuizQuestion();
+                } else {
+                    console.error('Quiz card element not found');
+                }
+            };
+
+            const showQuizQuestion = () => {
+                const quiz = selectedQuizData[currentQuiz];
+                const quizCard = getQuizCard();
+                if (!quiz) {
+                    showQuizResult();
+                    return;
+                }
+                if (!quizCard) {
+                    console.error('Quiz card element not found in showQuizQuestion');
+                    return;
+                }
+                quizCard.innerHTML = `<div style="text-align:center;font-weight:500;margin-bottom:2rem;">第 ${currentQuiz + 1} / ${selectedQuizData.length} 题</div><div class="quiz-question">${quiz.q}</div><div class="quiz-options">${quiz.o.map((opt, i) => `<div class="quiz-option" onclick="selectQuizOption(this, ${i === quiz.a})">${opt}</div>`).join('')}</div>`;
+            };
+
+            window.selectQuizOption = (el, isCorrect) => {
+                document.querySelectorAll('#quiz-game .quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+                el.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) score++;
+                setTimeout(() => { currentQuiz++; showQuizQuestion(); }, 1200);
+            };
+
+            const showQuizResult = () => {
+                const quizCard = getQuizCard();
+                if (!quizCard) {
+                    console.error('Quiz card element not found in showQuizResult');
+                    return;
+                }
+                let p = (score / selectedQuizData.length) * 100, icon = 'trophy', msg = '太棒了，网络安全达人！', iconColor = 'var(--primary-color)';
+                if (p < 100 && p >= 60) {
+                    icon = 'award';
+                    msg = '表现不错，继续加油！';
+                } else if (p < 60) {
+                    icon = 'book-reader';
+                    msg = '还需努力，巩固知识哦！';
+                }
+                quizCard.innerHTML = `<div class="quiz-results-screen"><div class="result-icon" style="color:${iconColor}"><i class="fas fa-${icon}"></i></div><h3>得分: ${score}/${selectedQuizData.length}</h3><p>${msg}</p><button class="cta-button" onclick="startQuiz()">再试一次</button></div>`;
+            };
+
+            // --- Game 2: Spot the Phish ---
+            const phishingScenarios = [
+                // 场景 1: 银行安全警报
+                {
+                    title: "🔥 挑战场景: 银行安全警报",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> bank-service@<span class="phish-hotspot" data-hotspot-id="phish1-1">secure-update.net</span></div><div><strong>📋 主题:</strong> 【🚨重要通知】您的账户需要紧急验证</div></div><div class="email-ui-body"><h4 style="color: #dc3545;">⚠️ 账户安全警报</h4><p><span class="phish-hotspot" data-hotspot-id="phish1-2">尊敬的用户</span>，</p><p>我们的系统检测到您的账户存在异常活动。<span class="phish-hotspot" data-hotspot-id="phish1-3">请您在24小时内点击下方链接验证您的身份，否则账户将被永久冻结</span>！</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish1-4" style="background: #dc3545; color: white; padding: 1rem 2rem; border-radius: 8px;" onclick="event.preventDefault();">🔐 立即验证账户安全</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish1-1', desc: '发件人可疑：邮箱地址与官方域名不符，这是最常见的破绽。' },
+                        { id: 'phish1-2', desc: '称呼泛泛：银行通常会使用您的真实姓名，而非“尊敬的用户”。' },
+                        { id: 'phish1-3', desc: '制造紧迫感：利用“冻结账户”等威胁，催促您在恐慌中做出错误决定。' },
+                        { id: 'phish1-4', desc: '诱导链接：要求点击链接是钓鱼邮件的核心目的，应直接访问官网核实。' }
+                    ]
+                },
+                // 场景 2: 恭喜中奖
+                {
+                    title: "🔥 挑战场景: 恭喜中奖",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> activity@<span class="phish-hotspot" data-hotspot-id="phish2-1">win-big-prize.com</span></div><div><strong>📋 主题:</strong> 恭喜您！您已被抽中成为幸运用户！</div></div><div class="email-ui-body"><h4 style="color: #10b981;">🎉 幸运大奖通知！</h4><p>尊敬的用户，恭喜您在我们的十周年庆典活动中，被抽中获得<span class="phish-hotspot" data-hotspot-id="phish2-2">最新款 Ipone 16 Pro Maxx 手机一部</span>！</p><p><span class="phish-hotspot" data-hotspot-id="phish2-3">请点击下方链接，填写您的收货地址、联系电话和身份证号码</span>，以便我们为您寄送奖品。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish2-4" style="background: #10b981; color: white; padding: 1rem 2rem; border-radius: 8px;" onclick="event.preventDefault();">🎁 立即领取我的奖品</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish2-1', desc: '发件人域名可疑：域名通常与活动内容相关，而非公司官方域名。' },
+                        { id: 'phish2-2', desc: '拼写错误：正规公司邮件中很少出现"Ipone"这样的低级拼写错误。' },
+                        { id: 'phish2-3', desc: '索要过多个人信息：领取奖品通常不需要身份证号这么敏感的信息。' },
+                        { id: 'phish2-4', desc: '“天上不会掉馅饼”：对任何突如其来的中奖信息都应保持高度警惕。' }
+                    ]
+                },
+                // 场景 3: 包裹投递异常
+                {
+                    title: "🔥 挑战场景: 包裹投递异常",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> post-service@<span class="phish-hotspot" data-hotspot-id="phish3-1">express-track.cn</span></div><div><strong>📋 主题:</strong> 包裹投递失败通知</div></div><div class="email-ui-body"><h4>包裹状态更新</h4><p><span class="phish-hotspot" data-hotspot-id="phish3-2">您的一个包裹</span>因地址不详投递失败。</p><p><span class="phish-hotspot" data-hotspot-id="phish3-3">包裹将在48小时后被退回发件人仓库</span>，并可能产生额外仓储费用。</p><p>请立即点击下方链接更新您的收货地址，并<span class="phish-hotspot" data-hotspot-id="phish3-4">支付2元重新派送费</span>。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" style="background: var(--warning-color); color: white; padding: 1rem;" onclick="event.preventDefault();">更新地址并支付</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish3-1', desc: '发件人可疑：通常应为具体的快递公司官方邮箱，而非通用的名称。' },
+                        { id: 'phish3-2', desc: '信息模糊：没有提供运单号、具体物品等关键信息。' },
+                        { id: 'phish3-3', desc: '制造紧迫感：利用“包裹退回”来催促用户立即行动。' },
+                        { id: 'phish3-4', desc: '要求支付小额费用：这是常见的诱饵，目的是获取你的支付信息。' }
+                    ]
+                },
+                // 场景 4: 社交账户风险
+                {
+                    title: "🔥 挑战场景: 社交账户风险",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> support@<span class="phish-hotspot" data-hotspot-id="phish4-1">faceboook-teams.com</span></div><div><strong>📋 主题:</strong> Re: 您的账户存在安全风险</div></div><div class="email-ui-body"><h4>账户安全中心</h4><p>我们检测到您的账户于 <span class="phish-hotspot" data-hotspot-id="phish4-2">一个不常用的设备(Windows 10, Chrome)</span> 登录。</p><p>如果这不是您本人操作，您的账户可能已被盗用。 <span class="phish-hotspot" data-hotspot-id="phish4-3">请立即点击下方链接重置您的密码以保护账户安全</span>。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish4-4" style="background: var(--info-color); color: white; padding: 1rem;" onclick="event.preventDefault();">重置密码</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish4-1', desc: '域名模仿：注意"faceboook"多了一个o，这是典型的模仿官方域名伎俩。' },
+                        { id: 'phish4-2', desc: '信息模糊但具体：提供看似具体的登录信息，增加可信度，但这些信息很可能是编造的。' },
+                        { id: 'phish4-3', desc: '错误的安全建议：正规平台会建议您手动访问官网修改密码，而非直接点击邮件链接。' },
+                        { id: 'phish4-4', desc: '链接是陷阱：该链接会导向一个假冒的登录页面，以窃取您的新旧密码。' }
+                    ]
+                },
+                // 场景 5: 紧急付款通知
+                {
+                    title: "🔥 挑战场景: 紧急付款通知",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> 王总 <span class="phish-hotspot" data-hotspot-id="phish5-1"><ceo.wang99@163.com></span></div><div><strong>📋 主题:</strong> Re: 紧急！立即处理！</div></div><div class="email-ui-body"><h4>小李：</h4><p>我现在正在外地开一个重要会议，<span class="phish-hotspot" data-hotspot-id="phish5-2">不方便打电话</span>。有一个合作款项需要紧急支付。</p><p>请立即向以下账户转账18,500元作为保证金。</p><p><span class="phish-hotspot" data-hotspot-id="phish5-3">此事非常紧急，务必在半小时内完成，不要通过公司流程</span>，回来我再给你补单。</p><p><span class="phish-hotspot" data-hotspot-id="phish5-4">办完后截图发我邮箱。</span></p></div>`,
+                    hotspots: [
+                        { id: 'phish5-1', desc: '发件人来自公共邮箱：公司高层通常使用企业邮箱，而非163、QQ等个人邮箱。' },
+                        { id: 'phish5-2', desc: '制造沟通障碍：以“开会”、“不方便”为由，阻止你通过电话等其他渠道核实。' },
+                        { id: 'phish5-3', desc: '违反常规流程：要求绕过正常财务审批流程，是诈骗的典型特征。' },
+                        { id: 'phish5-4', desc: '催促行事：要求立即行动并回复，进一步增加心理压力。' }
+                    ]
+                },
+                // 场景 6: 学校IT通知
+                {
+                    title: "🔥 挑战场景: 学校IT通知",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> IT-Support@<span class="phish-hotspot" data-hotspot-id="phish6-1">my-universty.edu.cn</span></div><div><strong>📋 主题:</strong> 您的校园邮箱密码即将过期</div></div><div class="email-ui-body"><h4>尊敬的同学：</h4><p>您的校园邮箱密码将于 <span class="phish-hotspot" data-hotspot-id="phish6-2">3天后过期</span>。</p><p>为避免影响您正常使用教务系统和在线课程，请立即点击下方链接进行密码重置。</p><p><span class="phish-hotspot" data-hotspot-id="phish6-3">请注意，您需要在链接的页面中输入您的旧密码和新密码</span>。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish6-4" style="background: var(--primary-color); color: white; padding: 1rem;" onclick="event.preventDefault();">立即重置密码</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish6-1', desc: '域名拼写错误：注意是"universty"而非"university"，这是常见的模仿手段。' },
+                        { id: 'phish6-2', desc: '制造紧迫感：利用密码过期来制造焦虑，促使你立即行动。' },
+                        { id: 'phish6-3', desc: '索要旧密码：正规的密码重置流程通常不会在同一页要求输入旧密码，这是为了窃取你的现有密码。' },
+                        { id: 'phish6-4', desc: '链接指向未知：应通过学校官网的官方入口修改密码，而非点击邮件链接。' }
+                    ]
+                },
+                // 场景 7: 云存储空间已满
+                {
+                    title: "🔥 挑战场景: 云存储空间已满",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> Gogle Drive <span class="phish-hotspot" data-hotspot-id="phish7-1"><no-reply@gogle-drive-team.com></span></div><div><strong>📋 主题:</strong> 您的云存储空间几乎已满</div></div><div class="email-ui-body"><h4>存储空间警告</h4><p>您的15GB免费存储空间已使用 <span class="phish-hotspot" data-hotspot-id="phish7-2">14.99GB</span>。</p><p><span class="phish-hotspot" data-hotspot-id="phish7-3">如果不升级，您将很快无法接收新邮件和上传新文件</span>。</p><p>我们为您提供了一个特别优惠，只需1元即可升级到100GB！</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish7-4" style="background: #ef4444; color: white; padding: 1rem;" onclick="event.preventDefault();">立即升级</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish7-1', desc: '发件人模仿：注意是"Gogle"而非"Google"，这是典型的品牌模仿。' },
+                        { id: 'phish7-2', desc: '极端的数字：使用“14.99GB”这种非常精确且接近极限的数字，增加真实感和紧迫感。' },
+                        { id: 'phish7-3', desc: '威胁性后果：用“无法接收邮件”等后果来恐吓用户。' },
+                        { id: 'phish7-4', desc: '小额支付诱饵：利用“1元升级”等小额优惠骗取你的支付信息。' }
+                    ]
+                },
+                // 场景 8: 视频网站订阅
+                {
+                    title: "🔥 挑战场景: 视频网站订阅",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> Notflex <span class="phish-hotspot" data-hotspot-id="phish8-1"><billing@notflex.com></span></div><div><strong>📋 主题:</strong> 您的订阅支付失败</div></div><div class="email-ui-body"><h4>支付信息更新请求</h4><p>尊敬的会员，</p><p>我们无法处理您上个月的订阅付款。<span class="phish-hotspot" data-hotspot-id="phish8-2">您的会员资格已被暂停</span>。</p><p>为继续观看您喜爱的节目，请立即更新您的支付信息。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish8-3" style="background: #1f2937; color: white; padding: 1rem;" onclick="event.preventDefault();">更新支付方式</a></div><p><span class="phish-hotspot" data-hotspot-id="phish8-4">感谢您对Notflex的支持。</span></p></div>`,
+                    hotspots: [
+                        { id: 'phish8-1', desc: '品牌名称模仿：注意是"Notflex"而非"Netflix"，是典型的模仿。' },
+                        { id: 'phish8-2', desc: '制造服务中断的恐慌：利用“会员暂停”来催促用户行动。' },
+                        { id: 'phish8-3', desc: '直接索要支付信息：点击链接后通常是一个假冒的支付页面。' },
+                        { id: 'phish8-4', desc: '不专业的结尾：正规邮件通常有更正式的落款，而非简单的感谢语。' }
+                    ]
+                },
+                // 场景 9: 虚假工作机会
+                {
+                    title: "🔥 挑战场景: 虚假工作机会",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> HR Department <span class="phish-hotspot" data-hotspot-id="phish9-1"><hr@job-opportunities-online.net></span></div><div><strong>📋 主题:</strong> 远程工作机会 - 每周$800</div></div><div class="email-ui-body"><h4>职位邀请：数据录入助理</h4><p>您好，</p><p>我们在招聘网站上看到了您的简历，认为您非常适合我们的远程数据录入助理职位。</p><p><span class="phish-hotspot" data-hotspot-id="phish9-2">工作内容简单，时间灵活，薪酬优厚，无需经验</span>。</p><p><span class="phish-hotspot" data-hotspot-id="phish9-3">如您有兴趣，请下载附件中的申请表，填写后与您的身份证扫描件一同回复</span>。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish9-4" style="background: var(--success-color); color: white; padding: 1rem;" onclick="event.preventDefault();">下载申请表.zip</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish9-1', desc: '通用发件人：正规招聘通常会使用公司官方域名，而非如此通用的域名。' },
+                        { id: 'phish9-2', desc: '条件过于优厚：“无需经验、高薪、轻松”的工作机会通常是陷阱。' },
+                        { id: 'phish9-3', desc: '索要敏感信息过早：正规流程不会在初次联系时就要身份证扫描件。' },
+                        { id: 'phish9-4', desc: '危险的附件：附件（尤其是.zip或.exe）中可能包含病毒或恶意软件。' }
+                    ]
+                },
+                // 场景 10: 共享文档
+                {
+                    title: "🔥 挑战场景: 共享文档",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> <span class="phish-hotspot" data-hotspot-id="phish10-1">李教授</span> <sharepoint-noreply@sharepoint-online.com></div><div><strong>📋 主题:</strong> 李教授与您共享了一个文件：“期末复习资料”</div></div><div class="email-ui-body"><h4>您收到了一个共享文件</h4><p><span class="phish-hotspot" data-hotspot-id="phish10-2">李教授</span>与您共享了以下文件：</p><h3 style="text-align:center; margin:1rem 0;">期末复习资料.docx</h3><p>此文件存储在 <span class="phish-hotspot" data-hotspot-id="phish10-3">Sharepoint</span> 上。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish10-4" style="background: var(--info-color); color: white; padding: 1rem;" onclick="event.preventDefault();">打开</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish10-1', desc: '发件人显示名可伪造：虽然显示是“李教授”，但实际邮箱地址是可疑的。' },
+                        { id: 'phish10-2', desc: '利用信任：利用你对老师或同事的信任，降低你的警惕性。' },
+                        { id: 'phish10-3', desc: '假冒官方平台：域名中可能包含"sharepoint"，但并非真正的微软官方域名。' },
+                        { id: 'phish10-4', desc: '诱导登录：点击“打开”后会跳转到假冒的Office 365登录页，以窃取你的校园账号密码。' }
+                    ]
+                },
+                // 场景 11: 虚假发票
+                {
+                    title: "🔥 挑战场景: 虚假发票",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> Apple <span class="phish-hotspot" data-hotspot-id="phish11-1"><receipts.no-reply@applestore-confirm.com></span></div><div><strong>📋 主题:</strong> 您的订单收据 [订单号: MQ847LL/A]</div></div><div class="email-ui-body"><h4>感谢您的购买！</h4><p>您的订单已确认。您购买的商品如下：</p><p><strong>MacBook Pro 16英寸 - ¥18,999.00</strong></p><p><span class="phish-hotspot" data-hotspot-id="phish11-2">如果这不是您本人购买的，您的账户可能已被盗用</span>。</p><p><span class="phish-hotspot" data-hotspot-id="phish11-3">请立即点击下方链接取消订单并保护您的账户</span>。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish11-4" onclick="event.preventDefault();">查看/管理您的订单</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish11-1', desc: '模仿域名：发件人域名"applestore-confirm.com"并非苹果官方域名。' },
+                        { id: 'phish11-2', desc: '制造恐慌：通过一个你没有下过的高额订单来制造恐慌，让你急于“取消”。' },
+                        { id: 'phish11-3', desc: '提供错误的解决方案：将“取消订单”作为诱饵，引诱你点击恶意链接。' },
+                        { id: 'phish11-4', desc: '链接文本具有欺骗性：链接文本看起来很正规，但实际指向的是钓鱼网站。' }
+                    ]
+                },
+                // 场景 12: 加密货币投资
+                {
+                    title: "🔥 挑战场景: 加密货币投资",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> Crypto Millionaire Club <span class="phish-hotspot" data-hotspot-id="phish12-1"><contact@crypto-invest-pro.io></span></div><div><strong>📋 主题:</strong> 抓住下一个百倍币的机会！</div></div><div class="email-ui-body"><h4>独家投资机会！</h4><p><span class="phish-hotspot" data-hotspot-id="phish12-2">厌倦了低回报吗？我们的专家团队发现了下一个即将暴涨的加密货币！</span></p><p><span class="phish-hotspot" data-hotspot-id="phish12-3">保证每月30%的稳定回报，零风险，专家带单！</span></p><p>名额有限，仅限前100名投资者。立即加入我们，开启财富自由之路！</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish12-4" style="background: var(--warning-color); color: white; padding: 1rem;" onclick="event.preventDefault();">立即加入</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish12-1', desc: '可疑的发件人：名称非常浮夸，域名也非知名机构。' },
+                        { id: 'phish12-2', desc: '利用暴富心理：用“百倍币”、“财富自由”等词汇吸引有投机心理的人。' },
+                        { id: 'phish12-3', desc: '承诺不切实际的回报：“保证收益”、“零风险”是所有投资诈骗的共同特征。' },
+                        { id: 'phish12-4', desc: '诱导加入：链接通常会导向一个虚假的投资平台或一个要求你转账的群聊。' }
+                    ]
+                },
+                // 场景 13: 敲诈勒索邮件
+                {
+                    title: "🔥 挑战场景: 敲诈勒索邮件",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> <span class="phish-hotspot" data-hotspot-id="phish13-1">Unknown</span></div><div><strong>📋 主题:</strong> 我知道你的秘密</div></div><div class="email-ui-body"><h4>我需要你的全部注意力。</h4><p>我在几个月前通过一个你访问的成人网站，在你的设备上安装了恶意软件。</p><p><span class="phish-hotspot" data-hotspot-id="phish13-2">我不仅记录了你访问的网站，还录下了你通过摄像头做的所有事</span>。</p><p>如果你不想我把这些视频发给你的所有联系人（家人、朋友、同事），<span class="phish-hotspot" data-hotspot-id="phish13-3">就在48小时内向我的比特币地址支付$500</span>。</p><p><span class="phish-hotspot" data-hotspot-id="phish13-4">不要尝试报警，我能抹去所有痕迹。这是你唯一的机会。</span></p></div>`,
+                    hotspots: [
+                        { id: 'phish13-1', desc: '匿名发件人：发件人信息通常是空白或伪造的，让你无法追踪。' },
+                        { id: 'phish13-2', desc: '虚张声势：这是典型的“性勒索”诈骗，骗子通常没有任何实际视频，只是在广撒网。' },
+                        { id: 'phish13-3', desc: '要求加密货币支付：要求使用比特币等难以追踪的加密货币进行支付。' },
+                        { id: 'phish13-4', desc: '威胁与恐吓：通过威胁阻止你求助，增加你的恐惧。遇到此类邮件应直接忽略并删除。' }
+                    ]
+                },
+                // 场景 14: 退税通知
+                {
+                    title: "🔥 挑战场景: 退税通知",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> 国家税务总局 <span class="phish-hotspot" data-hotspot-id="phish14-1"><tax-refund@gov-cn.net></span></div><div><strong>📋 主题:</strong> 您有一笔个人所得税退税待领取</div></div><div class="email-ui-body"><h4>个人所得税退税通知</h4><p>尊敬的纳税人：</p><p>根据最新政策，您有一笔<span class="phish-hotspot" data-hotspot-id="phish14-2">金额为¥2856.50的退税</span>待领取。</p><p><span class="phish-hotspot" data-hotspot-id="phish14-3">请点击下方链接，访问“国家退税官网”，输入您的银行卡信息以便我们向您转账</span>。</p><p>逾期未领取将视为自动放弃。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish14-4" style="background: var(--danger-color); color: white; padding: 1rem;" onclick="event.preventDefault();">领取我的退税</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish14-1', desc: '伪造的政府域名：我国政府网站域名以".gov.cn"结尾，而非".gov-cn.net"。' },
+                        { id: 'phish14-2', desc: '利用贪念：用一笔意想不到的“退税”作为诱饵。' },
+                        { id: 'phish14-3', desc: '索要银行信息：退税应通过官方App（如个人所得税App）进行，绝不会通过邮件链接索要银行卡信息。' },
+                        { id: 'phish14-4', desc: '假冒的官方链接：链接会指向一个高仿的政府网站，目的是窃取你的个人和金融信息。' }
+                    ]
+                },
+                // 场景 15: 电商订单确认
+                {
+                    title: "🔥 挑战场景: 电商订单确认",
+                    html: `<div class="email-ui-header"><div><strong>📧 发件人:</strong> Amason Order <span class="phish-hotspot" data-hotspot-id="phish15-1"><orders@amason-support.com></span></div><div><strong>📋 主题:</strong> 您在Amason的订单 #112-9876543-1234567 已发货</div></div><div class="email-ui-body"><h4>发货通知</h4><p>您好，</p><p>您订购的商品已发货。感谢您在 <span class="phish-hotspot" data-hotspot-id="phish15-2">Amason</span> 购物。</p><p>如果这不是您的订单，或您想取消，<span class="phish-hotspot" data-hotspot-id="phish15-3">请在24小时内联系我们</span>。</p><p>您可以点击下方追踪您的包裹。</p><div style="text-align: center; margin: 2rem 0;"><a href="#" class="phish-hotspot" data-hotspot-id="phish15-4" style="background: var(--warning-color); color: white; padding: 1rem;" onclick="event.preventDefault();">追踪包裹</a></div></div>`,
+                    hotspots: [
+                        { id: 'phish15-1', desc: '模仿域名和发件人：发件人域名"amason-support.com"是典型的模仿。' },
+                        { id: 'phish15-2', desc: '品牌拼写错误：注意是"Amason"而非"Amazon"。' },
+                        { id: 'phish15-3', desc: '制造紧迫和困惑：让你误以为有人盗用你的账户下了单，急于点击链接。' },
+                        { id: 'phish15-4', desc: '虚假的追踪链接：链接并非指向官方物流查询，而是钓鱼网站或恶意软件下载。' }
+                    ]
+                }
+            ];
+
+            let currentPhishingLevel = 0;
+            let foundPhishCount = 0;
+
+            window.startPhishingGame = () => {
+                // 每次开始游戏时，随机选择一个场景
+                currentPhishingLevel = Math.floor(Math.random() * phishingScenarios.length);
+                loadPhishingLevel(currentPhishingLevel);
+            };
+
+            const loadPhishingLevel = (levelIndex) => {
+                const gameArea = document.getElementById('phishing-game');
+                foundPhishCount = 0;
+                const scenario = phishingScenarios[levelIndex];
+
+                gameArea.innerHTML = `
+                    <h3 class="quiz-question" style="margin-bottom:1.5rem;">${scenario.title}</h3>
+                    <div class="phishing-email" id="phishing-email-content">${scenario.html}</div>
+                    <div id="phishing-status-area"></div>
+                `;
+
+                document.querySelectorAll('#phishing-email-content .phish-hotspot').forEach(el => {
+                    el.addEventListener('click', selectPhishHotspot);
+                });
+
+                updatePhishingProgress();
+            };
+
+            const selectPhishHotspot = (e) => {
+                const spot = e.target.closest('.phish-hotspot');
+                if (!spot || spot.classList.contains('found')) return;
+
+                spot.classList.add('found');
+                foundPhishCount++;
+
+                const currentScenario = phishingScenarios[currentPhishingLevel];
+                const hotspotData = currentScenario.hotspots.find(h => h.id === spot.dataset.hotspotId);
+
+                if (hotspotData) {
+                    showToast(hotspotData.desc);
+                }
+
+                updatePhishingProgress();
+            };
+
+            const updatePhishingProgress = () => {
+                const currentScenario = phishingScenarios[currentPhishingLevel];
+                const totalInLevel = currentScenario.hotspots.length;
+
+                if (foundPhishCount === totalInLevel) {
+                    // 当前场景完成
+                    setTimeout(showSceneComplete, 1200); // 延迟显示完成界面
+                } else {
+                    // 游戏进行中，更新进度条
+                    const progress = (foundPhishCount / totalInLevel) * 100;
+                    const statusArea = document.getElementById('phishing-status-area');
+                    statusArea.innerHTML = `
+                        <div class="phishing-status" style="text-align: center; margin-top: 2rem; color: var(--text-color);">
+                            <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem;">
+                                🎯 场景进度: ${foundPhishCount}/${totalInLevel}
+                            </p>
+                            <div class="phishing-progress-bar" style="max-width: 400px; margin: 0 auto;">
+                                <div style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            };
+
+            const showSceneComplete = () => {
+                const gameArea = document.getElementById('phishing-game');
+                const scenarioTitle = phishingScenarios[currentPhishingLevel].title.replace("🔥 挑战场景: ", "");
+
+                gameArea.innerHTML = `
+                    <div class="quiz-results-screen" style="padding: 3rem 2rem;">
+                        <div style="font-size: 5rem; margin-bottom: 1.5rem;">🎉</div>
+                        <h3 style="color: var(--success-color); font-size: 2.2rem; margin-bottom: 1rem;">挑战成功！</h3>
+                        <p style="font-size: 1.3rem; color: var(--text-muted-color); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                            太棒了！你成功识别了 “${scenarioTitle}” 场景中的所有风险点！
+                        </p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <button class="cta-button" onclick="startPhishingGame()">
+                                <i class="fas fa-redo"></i> 再玩一个场景
+                            </button>
+                            <button class="cta-button" onclick="switchGame('dragdrop')">
+                                <i class="fas fa-arrows-alt"></i> 切换到“行为分类”
+                            </button>
+                        </div>
+                    </div>
+                `;
+            };
+            // --- Game 3: Drag & Drop ---
+            const allDragItems = [
+                // 50 Good behaviors
+                { id: 'drag_good1', text: '使用独特且复杂的密码', type: 'good' },
+                { id: 'drag_good2', text: '理性发表评论，对事不对人', type: 'good' },
+                { id: 'drag_good3', text: '保护个人和他人的隐私信息', type: 'good' },
+                { id: 'drag_good4', text: '转发信息前先进行事实核查', type: 'good' },
+                { id: 'drag_good5', text: '为账户开启双因素认证(2FA)', type: 'good' },
+                { id: 'drag_good6', text: '尊重他人的知识产权和原创内容', type: 'good' },
+                { id: 'drag_good7', text: '积极举报网络不良和违法信息', type: 'good' },
+                { id: 'drag_good8', text: '在网上友善待人，提供建设性意见', type: 'good' },
+                { id: 'drag_good9', text: '分享有价值、能帮助他人的知识', type: 'good' },
+                { id: 'drag_good10', text: '定期更新软件和操作系统', type: 'good' },
+                { id: 'drag_good11', text: '在公共电脑上及时登出账户', type: 'good' },
+                { id: 'drag_good12', text: '仔细阅读并理解网站服务条款', type: 'good' },
+                { id: 'drag_good13', text: '使用HTTPS加密链接浏览网站', type: 'good' },
+                { id: 'drag_good14', text: '为重要的文件创建定期备份', type: 'good' },
+                { id: 'drag_good15', text: '在视频会议中不发言时将麦克风静音', type: 'good' },
+                { id: 'drag_good16', text: '为转载的文章或图片注明出处', type: 'good' },
+                { id: 'drag_good17', text: '帮助长辈或朋友提高数字技能', type: 'good' },
+                { id: 'drag_good18', text: '意识到“信息茧房”并主动接触不同观点', type: 'good' },
+                { id: 'drag_good19', text: '购买正版软件、音乐和电影', type: 'good' },
+                { id: 'drag_good20', text: '在评论中为他人提供真诚的赞美', type: 'good' },
+                { id: 'drag_good21', text: '管理好自己的屏幕使用时间', type: 'good' },
+                { id: 'drag_good22', text: '使用密码管理器来保管密码', type: 'good' },
+                { id: 'drag_good23', text: '对自己的网络言论负责', type: 'good' },
+                { id: 'drag_good24', text: '谨慎授予手机App权限', type: 'good' },
+                { id: 'drag_good25', text: '识别并忽略网络上的“钓鱼”内容', type: 'good' },
+                { id: 'drag_good26', text: '创建积极向上的在线社区', type: 'good' },
+                { id: 'drag_good27', text: '使用VPN保护在公共Wi-Fi上的隐私', type: 'good' },
+                { id: 'drag_good28', text: '在辩论中保持冷静和逻辑', type: 'good' },
+                { id: 'drag_good29', text: '设置复杂的社交媒体隐私权限', type: 'good' },
+                { id: 'drag_good30', text: '对提供帮助的网友表示感谢', type: 'good' },
+                { id: 'drag_good31', text: '定期检查自己的数字足迹', type: 'good' },
+                { id: 'drag_good32', text: '不随意泄露自己的地理位置', type: 'good' },
+                { id: 'drag_good33', text: '在提问前先尝试自己搜索答案', type: 'good' },
+                { id: 'drag_good34', text: '使用清晰的邮件标题和得体的称呼', type: 'good' },
+                { id: 'drag_good35', text: '传播科学知识，破除迷信', type: 'good' },
+                { id: 'drag_good36', text: '为优质的开源项目做出贡献', type: 'good' },
+                { id: 'drag_good37', text: '在游戏中遵守规则，尊重队友和对手', type: 'good' },
+                { id: 'drag_good38', text: '公开承认并纠正自己的网络错误', type: 'good' },
+                { id: 'drag_good39', text: '分享实用的生活技巧', type: 'good' },
+                { id: 'drag_good40', text: '提醒朋友注意潜在的网络诈骗', type: 'good' },
+                { id: 'drag_good41', text: '在网上发起或参与公益活动', type: 'good' },
+                { id: 'drag_good42', text: '学习并使用高级搜索语法', type: 'good' },
+                { id: 'drag_good43', text: '给新手提供耐心和友好的指导', type: 'good' },
+                { id: 'drag_good44', text: '进行“数字排毒”，关注线下生活', type: 'good' },
+                { id: 'drag_good45', text: '尊重不同文化和背景的网友', type: 'good' },
+                { id: 'drag_good46', text: '核实慈善机构的资质再捐款', type: 'good' },
+                { id: 'drag_good47', text: '在下载文件前用杀毒软件扫描', type: 'good' },
+                { id: 'drag_good48', text: '了解并遵守不同社区的版规', type: 'good' },
+                { id: 'drag_good49', text: '为照片中的他人打上马赛克', type: 'good' },
+                { id: 'drag_good50', text: '创建和维护有益的知识库（如Wiki）', type: 'good' },
+
+                // 50 Bad behaviors
+                { id: 'drag_bad1', text: '网络欺凌和语言暴力', type: 'bad' },
+                { id: 'drag_bad2', text: '制造和传播网络谣言', type: 'bad' },
+                { id: 'drag_bad3', text: '点击来历不明的链接和附件', type: 'bad' },
+                { id: 'drag_bad4', text: '“人肉搜索”并曝光他人隐私', type: 'bad' },
+                { id: 'drag_bad5', text: '在所有网站使用相同或相似的密码', type: 'bad' },
+                { id: 'drag_bad6', text: '抄袭、剽窃或“洗稿”他人作品', type: 'bad' },
+                { id: 'drag_bad7', text: '发表歧视性或仇恨言论', type: 'bad' },
+                { id: 'drag_bad8', text: '制作和传播恶意的Deepfake视频', type: 'bad' },
+                { id: 'drag_bad9', text: '下载和使用盗版软件或内容', type: 'bad' },
+                { id: 'drag_bad10', text: '在社交媒体上过度分享个人行程', type: 'bad' },
+                { id: 'drag_bad11', text: '在网上冒充他人身份', type: 'bad' },
+                { id: 'drag_bad12', text: '参与“网络水军”进行刷单控评', type: 'bad' },
+                { id: 'drag_bad13', text: '对他人进行网络“道德绑架”', type: 'bad' },
+                { id: 'drag_bad14', text: '随意将他人拉入无关的聊天群', type: 'bad' },
+                { id: 'drag_bad15', 'text': '在求助帖下进行嘲讽和挖苦', 'type': 'bad' },
+                { id: 'drag_bad16', text: '相信并参与“高回报”网络投资骗局', type: 'bad' },
+                { id: 'drag_bad17', text: '忽略软件和系统的安全更新', type: 'bad' },
+                { id: 'drag_bad18', text: '在网上对他人进行“荡妇羞辱”', type: 'bad' },
+                { id: 'drag_bad19', text: '未经允许将私下聊天记录截图公开', type: 'bad' },
+                { id: 'drag_bad20', text: '在严肃讨论中用抬杠来扰乱秩序', type: 'bad' },
+                { id: 'drag_bad21', text: '从非官方渠道下载App', type: 'bad' },
+                { id: 'drag_bad22', text: '参与危险的网络挑战', type: 'bad' },
+                { id: 'drag_bad23', text: '对受害者进行“有罪推定”', type: 'bad' },
+                { id: 'drag_bad24', text: '沉迷网络游戏，影响现实生活', type: 'bad' },
+                { id: 'drag_bad25', text: '在网上发布虐待动物的内容', type: 'bad' },
+                { id: 'drag_bad26', text: '发送包含病毒的邮件给他人', type: 'bad' },
+                { id: 'drag_bad27', text: '在论坛或社区进行“挖坟”', type: 'bad' },
+                { id: 'drag_bad28', text: '利用他人善意进行网络乞讨诈骗', type: 'bad' },
+                { id: 'drag_bad29', text: '泄露公司的商业机密', type: 'bad' },
+                { id: 'drag_bad30', text: '在网上进行赌博活动', type: 'bad' },
+                { id: 'drag_bad31', text: '“Catfishing”（网络情缘诈骗）', type: 'bad' },
+                { id: 'drag_bad32', text: '随意给App所有权限', type: 'bad' },
+                { id: 'drag_bad33', text: '在他人伤心时发表不合时宜的言论', type: 'bad' },
+                { id: 'drag_bad34', text: '创建和运营钓鱼网站', type: 'bad' },
+                { id: 'drag_bad35', text: '对别人的外貌、身材进行恶意评价', type: 'bad' },
+                { id: 'drag_bad36', text: '在网上进行网络诈骗活动', type: 'bad' },
+                { id: 'drag_bad37', text: '恶意给App或商品刷差评', type: 'bad' },
+                { id: 'drag_bad38', text: '未经同意使用他人的照片作为头像', type: 'bad' },
+                { id: 'drag_bad39', text: '在网上发布血腥暴力内容', type: 'bad' },
+                { id: 'drag_bad40', text: '通过破解来使用付费功能', type: 'bad' },
+                { id: 'drag_bad41', text: '在网上煽动群体对立和冲突', type: 'bad' },
+                { id: 'drag_bad42', text: '向他人发送骚扰性的信息或图片', type: 'bad' },
+                { id: 'drag_bad43', text: '只看标题就发表评论', type: 'bad' },
+                { id: 'drag_bad44', text: '分享他人的付费课程或内容', type: 'bad' },
+                { id: 'drag_bad45', text: '利用漏洞攻击网站或服务器', type: 'bad' },
+                { id: 'drag_bad46', text: '为博眼球而发布虚假求助信息', type: 'bad' },
+                { id: 'drag_bad47', text: '网络跟踪（Cyberstalking）', type: 'bad' },
+                { id: 'drag_bad48', text: '进行“键盘诊断”，给出不专业的医疗建议', type: 'bad' },
+                { id: 'drag_bad49', text: '在网上销售假冒伪劣产品', type: 'bad' },
+                { id: 'drag_bad50', text: '忽略网站的年龄限制要求', type: 'bad' },
+            ];
+
+            let currentDragItems = [];
+
+            const shuffleArray = (array) => {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            };
+
+            window.startDragDrop = () => {
+                // 从100个项目中，随机抽取5个好行为和5个坏行为
+                const goodItems = shuffleArray(allDragItems.filter(item => item.type === 'good')).slice(0, 3);
+                const badItems = shuffleArray(allDragItems.filter(item => item.type === 'bad')).slice(0, 3);
+                currentDragItems = shuffleArray([...goodItems, ...badItems]); // 合并并再次打乱顺序
+
+                const dragDropArea = document.getElementById('drag-drop-area');
+                if (!dragDropArea) {
+                    console.error('drag-drop-area element not found');
+                    return;
+                }
+                dragDropArea.innerHTML = `
+                    <h3 class="quiz-question">🎯 行为分类挑战：将下列10个行为拖动到正确的分类中</h3>
+                    <div class="drag-drop-container">
+                        <div class="drag-column good" id="good-column" ondragover="event.preventDefault()" ondrop="drop(event)">
+                            <h4><i class="fas fa-thumbs-up"></i> 好网民行为</h4>
+                            <div class="drag-items"></div>
+                        </div>
+                        <div class="drag-column bad" id="bad-column" ondragover="event.preventDefault()" ondrop="drop(event)">
+                            <h4><i class="fas fa-thumbs-down"></i> 不良行为</h4>
+                            <div class="drag-items"></div>
+                        </div>
+                    </div>
+                    <div class="drag-source-container">
+                        <h4>📋 待分类行为</h4>
+                        <div id="drag-source-items"></div>
+                    </div>
+                    <div style="text-align:center; margin-top:2rem;">
+                        <button class="cta-button" onclick="checkDragDrop()">
+                            <i class="fas fa-check"></i> 提交答案
+                        </button>
+                    </div>
+                `;
+                const source = document.getElementById('drag-source-items');
+                currentDragItems.forEach(item => {
+                    const el = document.createElement('div');
+                    el.id = item.id;
+                    el.className = 'drag-item';
+                    el.draggable = true;
+                    el.textContent = item.text;
+                    el.dataset.type = item.type;
+                    el.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', e.target.id));
+                    source.appendChild(el);
+                });
+            };
+
+            window.drop = e => {
+                e.preventDefault();
+                const id = e.dataTransfer.getData('text');
+                const el = document.getElementById(id);
+                if (el) {
+                    e.currentTarget.querySelector('.drag-items').appendChild(el);
+                }
+            };
+
+            window.checkDragDrop = () => {
+                let correct = 0;
+                let total = currentDragItems.length;
+
+                document.querySelectorAll('#good-column .drag-item').forEach(i => {
+                    if (i.dataset.type === 'good') correct++;
+                });
+                document.querySelectorAll('#bad-column .drag-item').forEach(i => {
+                    if (i.dataset.type === 'bad') correct++;
+                });
+
+                const allPlaced = document.querySelectorAll('.drag-column .drag-item').length === total;
+
+                if (!allPlaced) {
+                    showToast('请将所有项目都拖动到分类中！', 'error');
+                    return;
+                }
+
+                let resultHTML;
+                if (correct === total) {
+                    resultHTML = `
+                        <div class="quiz-results-screen">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+                            <h3 style="color: var(--success-color); font-size: 2rem; margin-bottom: 1rem;">完全正确！</h3>
+                            <p style="font-size: 1.2rem; color: var(--text-muted-color); margin-bottom: 2rem;">
+                                你对网络行为的判断非常准确！已经具备了良好的网络素养。
+                            </p>
+                            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                                <button class="cta-button" onclick="startDragDrop()">
+                                    <i class="fas fa-redo"></i> 再玩一局
+                                </button>
+                                <button class="cta-button" onclick="switchGame('quiz')">
+                                    <i class="fas fa-question-circle"></i> 切换到“知识问答”
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultHTML = `
+                        <div class="quiz-results-screen">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">🤔</div>
+                            <h3 style="color: var(--warning-color); font-size: 2rem; margin-bottom: 1rem;">还需努力</h3>
+                            <p style="font-size: 1.2rem; color: var(--text-muted-color); margin-bottom: 2rem;">
+                                您答对了 ${correct} / ${total} 个，继续学习提高网络素养吧！
+                            </p>
+                             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                                <button class="cta-button" onclick="startDragDrop()">
+                                    <i class="fas fa-redo"></i> 再试一次
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+                const dragDropArea = document.getElementById('drag-drop-area');
+                if (dragDropArea) {
+                    dragDropArea.innerHTML = resultHTML;
+                }
+            };
+
+            // --- Action Initiatives Modal ---
+            const actionDetails = { rationality: { title: '理性发声', examples: ['在评论区留言时，使用文明用语，不进行人身攻击。', '看到未经证实的消息，先求证，不盲目转发。', '对他人的不同观点，保持尊重，进行有理有据的讨论。', '主动分享科学知识、优秀文化等积极内容。'] }, security: { title: '守护安全', examples: ['为不同网站设置不同的高强度密码，并定期更换。', '不随意点击陌生邮件或短信中的链接、不扫描来历不明的二维码。', '在公共场合，谨慎连接无加密的公共Wi-Fi。', '不将自己的账号、密码、验证码等信息透露给他人。'] }, positive: { title: '传播正能量', examples: ['为见义勇为、助人为乐等正能量新闻点赞、转发。', '分享自己的学习心得、成长感悟，激励他人。', '创作或转发弘扬中华优秀传统文化的文艺作品。', '在网络上遇到求助信息，力所能及地提供帮助或转发给有能力的人。'] }, learning: { title: '持续学习', examples: ['关注科技前沿，学习人工智能、大数据等新知识。', '通过网络公开课、学习平台等提升自己的专业技能。', '学习信息检索技巧，提高从海量网络信息中获取有效信息的能力。', '了解最新的网络安全知识和诈骗手段，提高防范意识。'] } };
+            const modal = document.getElementById('actionModal');
+            window.showActionDetails = key => { const data = actionDetails[key]; if (!data) return; document.getElementById('modalTitle').textContent = data.title; document.getElementById('modalList').innerHTML = data.examples.map(ex => `<li><i class="fas fa-check-circle"></i>${ex}</li>`).join(''); modal.classList.add('active') };
+            window.closeActionModal = () => modal.classList.remove('active');
+            modal.addEventListener('click', e => { if (e.target === modal) closeActionModal() });
+
+            // --- Message Board ---
+            let messages = [{ id: 1, author: '海洋之子', content: '作为新时代大学生，我们要做网络正能量的传播者！', time: new Date(2024, 7, 15, 10, 30).toLocaleString() }, { id: 2, author: '数字原住民', content: '网络安全很重要！大家一定要提高警惕。', time: new Date(2024, 7, 15, 9, 15).toLocaleString() }], nextId = 3;
+            const renderMessages = () => { const list = document.getElementById('messagesList'); list.innerHTML = ''; messages.sort((a, b) => new Date(b.time) - new Date(a.time)).forEach(msg => { const item = document.createElement('div'); item.className = 'message-item'; item.dataset.id = msg.id; item.innerHTML = `<div class="message-header"><span class="message-author">${msg.author}</span><div><span class="message-time">${msg.time}</span><span class="message-actions"><button onclick="toggleEdit(${msg.id})" title="编辑"><i class="fas fa-edit"></i></button><button onclick="deleteMessage(${msg.id})" title="删除"><i class="fas fa-trash"></i></button></span></div></div><div class="message-content">${msg.content}</div>`; list.appendChild(item) }) };
+            window.submitMessage = btn => { const a = document.getElementById('authorName').value.trim(), c = document.getElementById('messageContent').value.trim(); if (!a || !c) return showToast('昵称和内容不能为空！', 'error'); btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 发表中...`; setTimeout(() => { messages.push({ id: nextId++, author: a, content: c, time: new Date().toLocaleString() }); renderMessages(); document.getElementById('authorName').value = ''; document.getElementById('messageContent').value = ''; showToast('留言发表成功！'); btn.disabled = false; btn.innerHTML = `<i class="fas fa-paper-plane"></i> 发表留言` }, 500) };
+            window.deleteMessage = id => { if (confirm('确定要删除这条留言吗？')) { messages = messages.filter(m => m.id !== id); renderMessages(); showToast('删除成功！') } };
+            window.toggleEdit = id => {
+                const item = document.querySelector(`.message-item[data-id='${id}']`);
+                const content = item.querySelector('.message-content');
+                let editArea = item.querySelector('.edit-area');
+
+                if (!editArea) {
+                    // 创建编辑区域
+                    const currentContent = content.textContent;
+                    editArea = document.createElement('div');
+                    editArea.className = 'edit-area';
+                    editArea.innerHTML = `
+                        <div class="edit-input-group">
+                            <input type="text" class="edit-input" value="${currentContent}" placeholder="修改留言内容...">
+                        </div>
+                        <div class="edit-controls">
+                            <button class="edit-btn save-btn" onclick="saveMessage(${id}, this)">
+                                <i class="fas fa-check"></i> 保存
+                            </button>
+                            <button class="edit-btn cancel-btn" onclick="toggleEdit(${id})">
+                                <i class="fas fa-times"></i> 取消
+                            </button>
+                        </div>
+                    `;
+                    item.appendChild(editArea);
+                    content.style.display = 'none';
+                } else {
+                    // 切换显示状态
+                    if (editArea.style.display === 'block') {
+                        editArea.remove();
+                        content.style.display = 'block';
+                    } else {
+                        content.style.display = 'none';
+                        editArea.style.display = 'block';
+                    }
+                }
+            };
+            window.saveMessage = (id, btn) => {
+                const newContent = btn.closest('.edit-area').querySelector('.edit-input').value.trim();
+                if (!newContent) return showToast('内容不能为空！', 'error');
+                const messageIndex = messages.findIndex(m => m.id === id);
+                if (messageIndex > -1) {
+                    messages[messageIndex].content = newContent;
+                    renderMessages();
+                    showToast('修改成功！');
+                }
+            };
+
+            // Initial Load
+            showSection('home');
+            startQuiz();
+            renderMessages();
+        });
+    </script>
+</body>
+
+</html>
