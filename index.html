@@ -2507,14 +2507,35 @@
             const updatePhishingProgress = () => {
                 const currentScenario = phishingScenarios[currentPhishingLevel];
                 const totalInLevel = currentScenario.hotspots.length;
+                const progress = (foundPhishCount / totalInLevel) * 100;
+                const statusArea = document.getElementById('phishing-status-area');
 
+                // 先更新进度显示（包括完成时的4/4状态）
                 if (foundPhishCount === totalInLevel) {
-                    // 当前场景完成
-                    setTimeout(showSceneComplete, 1200); // 延迟显示完成界面
+                    // 显示完成状态的进度
+                    statusArea.innerHTML = `
+                        <div class="phishing-status" style="text-align: center; margin-top: 2rem; color: var(--text-color);">
+                            <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; color: var(--success-color);">
+                                🎯 场景进度: ${foundPhishCount}/${totalInLevel} ✅
+                            </p>
+                            <div class="phishing-progress-bar" style="max-width: 400px; margin: 0 auto;">
+                                <div style="width: 100%; background: var(--gradient-success);"></div>
+                            </div>
+                            <p style="margin-top: 1rem; color: var(--success-color); font-weight: 600;">
+                                🎉 太棒了！所有可疑之处都被发现了！
+                            </p>
+                        </div>
+                    `;
+                    // 延迟显示完成界面，让用户看到4/4的状态
+                    setTimeout(showSceneComplete, 2000);
                 } else {
                     // 游戏进行中，更新进度条
-                    const progress = (foundPhishCount / totalInLevel) * 100;
-                    const statusArea = document.getElementById('phishing-status-area');
+                    // 添加提示按钮，当找到一半以上热点时显示
+                    const hintButton = foundPhishCount >= Math.ceil(totalInLevel / 2) ?
+                        `<button class="cta-button" onclick="showHints()" style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.9rem; background: var(--warning-color);">
+                            💡 需要提示？
+                        </button>` : '';
+
                     statusArea.innerHTML = `
                         <div class="phishing-status" style="text-align: center; margin-top: 2rem; color: var(--text-color);">
                             <p style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem;">
@@ -2523,8 +2544,48 @@
                             <div class="phishing-progress-bar" style="max-width: 400px; margin: 0 auto;">
                                 <div style="width: ${progress}%"></div>
                             </div>
+                            ${hintButton}
                         </div>
                     `;
+                }
+            };
+
+            // 添加提示功能
+            window.showHints = () => {
+                const currentScenario = phishingScenarios[currentPhishingLevel];
+                const allHotspots = document.querySelectorAll('.phish-hotspot');
+                const unfoundHotspots = [];
+
+                // 找出还没有被发现的热点
+                currentScenario.hotspots.forEach(hotspot => {
+                    const element = document.querySelector(`[data-hotspot-id="${hotspot.id}"]`);
+                    if (element && !element.classList.contains('found')) {
+                        unfoundHotspots.push(hotspot);
+                    }
+                });
+
+                if (unfoundHotspots.length > 0) {
+                    // 高亮显示未找到的热点
+                    unfoundHotspots.forEach(hotspot => {
+                        const element = document.querySelector(`[data-hotspot-id="${hotspot.id}"]`);
+                        if (element) {
+                            element.style.animation = 'pulse 1s infinite';
+                            element.style.boxShadow = '0 0 15px var(--warning-color)';
+                        }
+                    });
+
+                    showToast(`💡 提示：还有 ${unfoundHotspots.length} 个可疑之处等待发现！注意高亮区域。`, 'info');
+
+                    // 3秒后移除高亮效果
+                    setTimeout(() => {
+                        unfoundHotspots.forEach(hotspot => {
+                            const element = document.querySelector(`[data-hotspot-id="${hotspot.id}"]`);
+                            if (element) {
+                                element.style.animation = '';
+                                element.style.boxShadow = '';
+                            }
+                        });
+                    }, 3000);
                 }
             };
 
